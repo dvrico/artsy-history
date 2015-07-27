@@ -30,7 +30,7 @@ function getEdgar(url) {
       if (err) {
         return console.log('error')
       }
-      console.log(res.body.name + ' was born in ' + res.body.birthday + ' in ' + res.body.hometown)
+      console.log(res.body)
       degasScript = res.body.name + ' was born in ' + res.body.hometown + ', ' + res.body.birthday
       //elArtistInfo.innerHTML(degasScript)
     })
