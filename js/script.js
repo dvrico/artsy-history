@@ -3,6 +3,8 @@
 //curl -v -X POST "https://api.artsy.net/api/tokens/xapp_token?client_id=00665d46bb4f56d42b98&client_secret=86d483720aa6dedc9c86d1129a995749"
 
 var request = require('superagent');
+var degasScript;
+//var elArtistInfo = document.getElementById('artist)info')
 
 var clientID = '00665d46bb4f56d42b98',
     clientSecret = '86d483720aa6dedc9c86d1129a995749',
@@ -29,5 +31,9 @@ function getEdgar(url) {
         return console.log('error')
       }
       console.log(res.body.name + ' was born in ' + res.body.birthday + ' in ' + res.body.hometown)
+      degasScript = res.body.name + ' was born in ' + res.body.hometown + ', ' + res.body.birthday
+      //elArtistInfo.innerHTML(degasScript)
     })
 }
+
+console.log('working?')
