@@ -35,5 +35,3 @@ function getEdgar(url) {
       //elArtistInfo.innerHTML(degasScript)
     })
 }
-
-console.log('working?')
