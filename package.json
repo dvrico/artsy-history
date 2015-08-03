@@ -17,6 +17,10 @@
   },
   "homepage": "https://github.com/dvrico/artsy-history#readme",
   "dependencies": {
-    "express": "^4.13.1"
+    "express": "^4.13.3",
+    "jade": "^1.11.0",
+    "mongodb": "^1.4.39",
+    "mongoskin": "^1.4.13",
+    "stylus": "^0.52.0"
   }
 }

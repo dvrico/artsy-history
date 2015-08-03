@@ -1,18 +1,35 @@
+// REQUIRE DEPENDENCIES
 var express = require('express')
+var http = require('http')
+var path = require('path')
 var app = express()
 
+// CONFIGURE SETTINGS
+app.set('port', process.env.PORT || 3000)
+app.set('views', path.join(__dirname, 'views'))
+app.set('view engine', 'jade')
 
-//ROUTES
-//----------
-app.get('/', function (req, res) {
-  res.render('views/index.html')
+// CONNECT TO DB
+
+// DEFINE MIDDLEWARE
+
+// DEFINE ROUTES
+app.all('*', function(req, res) {
+  res.render('index', {msg: 'Welcome to the Art(sy) History Flash Card Game!'})
 })
 
-
-//SERVER
+// START SERVER
 //----------
-var server = app.listen(3000, function() {
-  var host = server.address().address
-  var port = server.address().port
-  console.log('Example app listening at http://localhost:' + port)
-})
+http
+  .createServer(app)
+  .listen(
+    app.get('port'),
+    function() {
+      console.log(
+        'Express server listening on port ' +
+        app.get('port')
+      )
+    }
+  )
+
+// SPAWN WORKERS (OPTIONAL)
