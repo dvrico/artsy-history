@@ -8,9 +8,10 @@ var clientSecret = '86d483720aa6dedc9c86d1129a995749'
 var apiUrl = 'https://api.artsy.net/api/tokens/xapp_token'
 var xappToken;
 var degas;
+var degasArtwork;
 
-// SEND REQUEST
-//----------------------
+// REQUEST TOKEN AND CALLBACK REQUEST DEGAS INFO
+//----------------------------------------------------
 request
   .post(apiUrl)
   .send({ client_id: clientID, client_secret: clientSecret })
@@ -45,6 +46,21 @@ function getDegas() {
         return console.log('error')
       }
       console.log(res.body)
-      degas = res.body.name + '\n' + 'Birthday: ' + res.body.birthday + '\n' + 'Hometown: ' + res.body.hometown + '\n' + 'Nationality: ' + res.body.nationality;
+      degas = '\n' + res.body.name + '\n' + 'Birthday: ' + res.body.birthday + '\n' + 'Hometown: ' + res.body.hometown + '\n' + 'Nationality: ' + res.body.nationality;
+      degasArtwork = res.body._links.artworks.href
+      //getDegasArtwork()
+    })
+}
+
+function getDegasArtwork() {
+  request
+    .get(degasArtwork)
+    .set('X-Xapp-Token', xappToken)
+    .end(function(err, res) {
+      if (err) {
+        return console.log('error2')
+      }
+      console.log('OBTAINED DEGAS ARTWORK')
+      console.log(res.body)
     })
 }
