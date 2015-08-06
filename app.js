@@ -21,6 +21,7 @@ var clientID = '00665d46bb4f56d42b98'
 var clientSecret = '86d483720aa6dedc9c86d1129a995749'
 var apiUrl = 'https://api.artsy.net/api/tokens/xapp_token'
 var xappToken
+var degas
 
 request
   .post(apiUrl)
@@ -30,10 +31,25 @@ request
       return console.log('error')
     }
     xappToken = res.body.token;
-    console.log(res.body)
+    //console.log(res.body)
 
-    //getDegas();
+    getDegas();
   });
+
+function getDegas() {
+  request
+    .get('https://api.artsy.net/api/artists/edgar-degas')
+    .set('X-Xapp-Token', xappToken)
+    .end(function(err, res) {
+      if (err) {
+        return console.log('error')
+      }
+      degas = '\n' + res.body.name + '\n' + 'Birthday: ' + res.body.birthday + '\n' + 'Hometown: ' + res.body.hometown + '\n' + 'Nationality: ' + res.body.nationality;
+      //degasArtwork = res.body._links.artworks.href
+      //getDegasArtwork()
+      // this cb calls the function below to retrieve Degas info after auth token is generated
+    })
+}
 
 // DEFINE ROUTES
 app.get('/', function(req, res) {
@@ -41,11 +57,11 @@ app.get('/', function(req, res) {
 })
 
 app.get('/token', function(req, res) {
-  res.render('degas', {msg: xappToken})
+  res.render('degas', {msg: degas})
 })
 
 // START SERVER
-//----------
+//-------------
 http
   .createServer(app)
   .listen(
