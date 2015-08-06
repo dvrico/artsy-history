@@ -14,8 +14,12 @@ app.set('view engine', 'jade')
 // DEFINE MIDDLEWARE
 
 // DEFINE ROUTES
-app.all('*', function(req, res) {
+app.get('/', function(req, res) {
   res.render('index', {msg: 'Welcome to the Art(sy) History Flash Card Game!'})
+})
+
+app.get('/token', function(req, res) {
+  res.render('degas')
 })
 
 // START SERVER
