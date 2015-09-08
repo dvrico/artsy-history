@@ -48,7 +48,7 @@ function getDegas() {
       console.log(res.body)
       degas = '\n' + res.body.name + '\n' + 'Birthday: ' + res.body.birthday + '\n' + 'Hometown: ' + res.body.hometown + '\n' + 'Nationality: ' + res.body.nationality;
       degasArtwork = res.body._links.artworks.href
-      //getDegasArtwork()
+      // getDegasArtwork()
       // this cb calls the function below to retrieve Degas info after auth token is generated
     })
 }

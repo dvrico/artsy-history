@@ -22,6 +22,7 @@ var clientSecret = '86d483720aa6dedc9c86d1129a995749'
 var apiUrl = 'https://api.artsy.net/api/tokens/xapp_token'
 var xappToken
 var degas
+var degasThumbnail
 
 request
   .post(apiUrl)
@@ -35,7 +36,9 @@ request
 
     getDegas();
   });
-
+/*
+ * Get Degas info from Artsy API
+ */
 function getDegas() {
   request
     .get('https://api.artsy.net/api/artists/edgar-degas')
@@ -44,10 +47,25 @@ function getDegas() {
       if (err) {
         return console.log('error')
       }
+      console.log(res.body)
+      degasThumbnail = res.body._links.thumbnail.href
       degas = '\n' + res.body.name + '\n' + 'Birthday: ' + res.body.birthday + '\n' + 'Hometown: ' + res.body.hometown + '\n' + 'Nationality: ' + res.body.nationality;
+      getThumbnail
       //degasArtwork = res.body._links.artworks.href
       //getDegasArtwork()
       // this cb calls the function below to retrieve Degas info after auth token is generated
+    })
+}
+
+function getThumbnail() {
+  request
+    .get(degasThumbnail)
+    .set('X-Xapp-Token', xappToken)
+    .end(function(err, res) {
+      if (err) {
+        return console.log('error')
+      }
+      console.log(res.body)
     })
 }
 
@@ -57,7 +75,7 @@ app.get('/', function(req, res) {
 })
 
 app.get('/token', function(req, res) {
-  res.render('degas', {msg: degas})
+  res.render('degas', {msg: degasThumbnail})
 })
 
 // START SERVER
