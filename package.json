@@ -1,27 +1,16 @@
 {
-  "name": "artsy-history",
+  "name": "testing",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/dvrico/artsy-history.git"
-  },
-  "author": "dvrico",
+  "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/dvrico/artsy-history/issues"
-  },
-  "homepage": "https://github.com/dvrico/artsy-history#readme",
   "dependencies": {
-    "express": "^4.13.3",
-    "jade": "^1.11.0",
-    "mongodb": "^1.4.39",
-    "mongoskin": "^1.4.13",
-    "stylus": "^0.52.0",
-    "superagent": "^1.3.0"
+    "superagent": "^1.3.0",
+    "traverson": "^2.1.0",
+    "traverson-hal": "^2.1.0"
   }
 }
