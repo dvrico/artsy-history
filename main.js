@@ -8,9 +8,22 @@ var clientID = '00665d46bb4f56d42b98',
     xappToken
 
 var degas, degasArtwork;
+var degasTheDanceLesson;
 var elDegasBio = document.getElementById('artistBio')
 var elDegasLink = document.getElementById('artistLink')
 var elDegasArt = document.getElementById('artistImage')
+
+var elfirstArtist = document.getElementById('firstArtist')
+var elfirstImage = document.getElementById('firstImage')
+
+var elsecondArtist = document.getElementById('secondArtist')
+var elsecondImage = document.getElementById('secondImage')
+
+var elthirdArtist = document.getElementById('thirdArtist')
+var elthirdImage = document.getElementById('thirdImage')
+
+var elfourthArtist = document.getElementById('fourthArtist')
+var elfourthImage = document.getElementById('fourthImage')
 
 var impressionism = '4d90d191dcdd5f44a500004e'
 var impressionismDescription;
@@ -26,7 +39,6 @@ request
         xappToken = res.body.token
         console.log(xappToken)
 
-        getDegas()
         query()
     })
 
@@ -51,12 +63,13 @@ var query = function() {
         if (error) {
             console.log('Error with the Query!')
         }
-        console.log(query)
+        //console.log(query)
         for (var i=0; i<4; i++) {
             //var placeholder = query._embedded.artists[Math.floor(Math.random()*5)]
             artistArray.push(query._embedded.artists[i])
         }
         console.log(artistArray)
+        getDegas()
     })
 }
 
@@ -116,4 +129,16 @@ var displayDegas = function() {
     elDegasBio.innerHTML = degas
     elDegasLink.innerHTML = degasArtwork
     elDegasArt.src=degasTheDanceLesson
+
+    elfirstArtist.innerHTML = '<p>' + artistArray[0].name + '</p>'
+    // elfirstImage.src=
+
+    elsecondArtist.innerHTML = '<p>' + artistArray[1].name + '</p>'
+    // elfirstImage.src=
+
+    elthirdArtist.innerHTML = '<p>' + artistArray[2].name + '</p>'
+    // elfirstImage.src=
+
+    elfourthArtist.innerHTML = '<p>' + artistArray[3].name + '</p>'
+    // elfirstImage.src=
 }
