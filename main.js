@@ -12,6 +12,10 @@ var elDegasBio = document.getElementById('artistBio')
 var elDegasLink = document.getElementById('artistLink')
 var elDegasArt = document.getElementById('artistImage')
 
+var impressionism = '4d90d191dcdd5f44a500004e'
+var impressionismDescription;
+var artistArray = []
+
 request
     .post(apiUrl)
     .send({ client_id: clientID, client_secret: clientSecret })
@@ -23,9 +27,10 @@ request
         console.log(xappToken)
 
         getDegas()
+        query()
     })
 
-var getDegas = function() {
+var query = function() {
     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 
     var api = traverson
@@ -36,6 +41,36 @@ var getDegas = function() {
         'X-Xapp-Token': xappToken,
         'Accept': 'application/vnd.artsy-v2+json'
       }
+    })
+
+    api
+    .newRequest()
+    .follow('gene', 'artists')
+    .withTemplateParameters({ id: impressionism })
+    .getResource(function(error, query) {
+        if (error) {
+            console.log('Error with the Query!')
+        }
+        console.log(query)
+        for (var i=0; i<4; i++) {
+            //var placeholder = query._embedded.artists[Math.floor(Math.random()*5)]
+            artistArray.push(query._embedded.artists[i])
+        }
+        console.log(artistArray)
+    })
+}
+
+var getDegas = function() {
+    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+
+    var api = traverson
+    .from('https://api.artsy.net/api')
+    .jsonHal()
+    .withRequestOptions({
+        headers: {
+            'X-Xapp-Token': xappToken,
+            'Accept': 'application/vnd.artsy-v2+json'
+        }
     })
 
     api
@@ -69,7 +104,7 @@ var getDegasArtwork = function(artwork) {
         if (error) {
             console.log('another error..')
         }
-        console.log(allArtwork)
+        //console.log(allArtwork)
         console.log(allArtwork._embedded.artworks[3].title)
         degasArtwork = allArtwork._embedded.artworks[3].title;
         degasTheDanceLesson = allArtwork._embedded.artworks[3]._links.thumbnail.href
@@ -80,6 +115,5 @@ var getDegasArtwork = function(artwork) {
 var displayDegas = function() {
     elDegasBio.innerHTML = degas
     elDegasLink.innerHTML = degasArtwork
-    //degasTheDanceLesson = "https://d32dm0rphc51dk.cloudfront.net/W3vatICkbl1aYyGGuHdt8g/large.jpg"
     elDegasArt.src=degasTheDanceLesson
 }
