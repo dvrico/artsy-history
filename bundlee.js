@@ -16,6 +16,7 @@ var elDegasArt = document.getElementById('artistImage')
 
 var elfirstArtist = document.getElementById('firstArtist')
 var elfirstImage = document.getElementById('firstImage')
+var firstArtistArtwork;
 
 var elsecondArtist = document.getElementById('secondArtist')
 var elsecondImage = document.getElementById('secondImage')
@@ -70,6 +71,31 @@ var query = function() {
             artistArray.push(query._embedded.artists[i])
         }
         console.log(artistArray)
+        var artistArtworks = artistArray[0]._links.artworks.href
+        getImagesOfArtists(artistArtworks)
+    })
+}
+
+var getImagesOfArtists = function(artistArtworks) {
+
+    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+
+    traverson
+    .from(artistArtworks)
+    .jsonHal()
+    .withRequestOptions({
+        headers: {
+            'X-Xapp-Token': xappToken,
+            'Accept': 'application/vnd.artsy-v2+json'
+        }
+    })
+    .getResource(function(error, artworks) {
+        if (error) {
+            console.log('another error..')
+        }
+        console.log(artworks)
+        firstArtistArtwork = artworks._embedded.artworks[Math.floor(Math.random()*5)]._links.thumbnail.href
+
         getDegas()
     })
 }
@@ -131,17 +157,17 @@ var displayDegas = function() {
     elDegasLink.innerHTML = degasArtwork
     elDegasArt.src=degasTheDanceLesson
 
-    elfirstArtist.innerHTML = '<p>' + artistArray[0].name + '</p>'
-    // elfirstImage.src=
+    elfirstArtist.innerHTML = artistArray[0].name
+    elfirstImage.src=firstArtistArtwork
 
-    elsecondArtist.innerHTML = '<p>' + artistArray[1].name + '</p>'
-    // elfirstImage.src=
+    elsecondArtist.innerHTML = artistArray[1].name
+    elsecondImage.src=firstArtistArtwork
 
-    elthirdArtist.innerHTML = '<p>' + artistArray[2].name + '</p>'
-    // elfirstImage.src=
+    elthirdArtist.innerHTML = artistArray[2].name
+    elthirdImage.src=firstArtistArtwork
 
-    elfourthArtist.innerHTML = '<p>' + artistArray[3].name + '</p>'
-    // elfirstImage.src=
+    elfourthArtist.innerHTML = artistArray[3].name
+    elfourthImage.src=firstArtistArtwork
 }
 
 },{"superagent":2,"traverson":49,"traverson-hal":5}],2:[function(require,module,exports){
