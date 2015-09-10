@@ -30,6 +30,9 @@ var elfourthImage = document.getElementById('fourthImage')
 var impressionism = '4d90d191dcdd5f44a500004e'
 var impressionismDescription;
 var artistArray = []
+var artworkArray = []
+
+
 
 request
     .post(apiUrl)
@@ -71,33 +74,39 @@ var query = function() {
             artistArray.push(query._embedded.artists[i])
         }
         console.log(artistArray)
-        var artistArtworks = artistArray[0]._links.artworks.href
+        var artistArtworks = artistArray
         getImagesOfArtists(artistArtworks)
     })
 }
 
 var getImagesOfArtists = function(artistArtworks) {
-
     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 
-    traverson
-    .from(artistArtworks)
-    .jsonHal()
-    .withRequestOptions({
-        headers: {
-            'X-Xapp-Token': xappToken,
-            'Accept': 'application/vnd.artsy-v2+json'
-        }
-    })
-    .getResource(function(error, artworks) {
-        if (error) {
-            console.log('another error..')
-        }
-        console.log(artworks)
-        firstArtistArtwork = artworks._embedded.artworks[Math.floor(Math.random()*5)]._links.thumbnail.href
+    for(var i=0; i < artistArtworks.length; i++) {
 
-        getDegas()
-    })
+        console.log(artistArtworks.length)
+        traverson
+        .from(artistArtworks[i]._links.artworks.href)
+        .jsonHal()
+        .withRequestOptions({
+            headers: {
+                'X-Xapp-Token': xappToken,
+                'Accept': 'application/vnd.artsy-v2+json'
+            }
+        })
+        .getResource(function(error, artworks) {
+            if (error) {
+                console.log('another error..')
+            }
+            if(artworks._embedded.artworks.length > 0) {
+                console.log(artworks)
+                artworkArray.push(artworks._embedded.artworks[0]._links.thumbnail.href)
+            }
+            if(artworkArray.length >= 2) {
+                getDegas()
+            }
+        })
+    }
 }
 
 var getDegas = function() {
@@ -158,16 +167,16 @@ var displayDegas = function() {
     elDegasArt.src=degasTheDanceLesson
 
     elfirstArtist.innerHTML = artistArray[0].name
-    elfirstImage.src=firstArtistArtwork
+    elfirstImage.src=artworkArray[0]
 
     elsecondArtist.innerHTML = artistArray[1].name
-    elsecondImage.src=firstArtistArtwork
+    elsecondImage.src=artworkArray[1]
 
     elthirdArtist.innerHTML = artistArray[2].name
-    elthirdImage.src=firstArtistArtwork
+    //elthirdImage.src=artworkArray[2]  // This artist does not have artwork
 
     elfourthArtist.innerHTML = artistArray[3].name
-    elfourthImage.src=firstArtistArtwork
+    //elfourthImage.src=artworkArray[3]  //This artist does not have artwork
 }
 
 },{"superagent":2,"traverson":49,"traverson-hal":5}],2:[function(require,module,exports){
