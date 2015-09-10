@@ -6,7 +6,62 @@ var JsonHalAdapter = require('traverson-hal')
 var clientID = '00665d46bb4f56d42b98',
     clientSecret = '86d483720aa6dedc9c86d1129a995749',
     apiUrl = 'https://api.artsy.net/api/tokens/xapp_token',
-    xappToken
+    xappToken;
+
+var artistArray = []
+
+module.exports = {
+
+    requestToken: function(CATEGORY) {
+        request
+            .post(apiUrl)
+            .send({ client_id: clientID, client_secret: clientSecret })
+            .end(function(err, res) {
+                if (err) {
+                  console.log('error')
+                }
+                xappToken = res.body.token
+                console.log(xappToken)
+
+                module.exports.queryForCategory(CATEGORY)
+            })
+    },
+    queryForCategory: function(CATEGORY) {
+        traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+
+        var api = traverson
+        .from('https://api.artsy.net/api')
+        .jsonHal()
+        .withRequestOptions({
+          headers: {
+            'X-Xapp-Token': xappToken,
+            'Accept': 'application/vnd.artsy-v2+json'
+          }
+        })
+
+        api
+        .newRequest()
+        .follow('gene', 'artists')
+        .withTemplateParameters({ id: CATEGORY })
+        .getResource(function(error, resource) {
+            if (error) {
+                console.log('Error with the Query!')
+            }
+            //console.log(resource)
+            for (var i=0; i<4; i++) {
+                //var placeholder = resource._embedded.artists[Math.floor(Math.random()*5)]
+                artistArray.push(resource._embedded.artists[i])
+            }
+            console.log(artistArray)
+            var artistArtworks = artistArray
+            //getImagesOfArtists(artistArtworks)
+        })
+    }
+} // END OF ARTSY OBJECT
+
+},{"superagent":3,"traverson":50,"traverson-hal":6}],2:[function(require,module,exports){
+var Artsy = require('./artsy.js')
+
 
 var degas, degasArtwork;
 var degasTheDanceLesson;
@@ -33,153 +88,110 @@ var artistArray = []
 var artworkArray = []
 
 
+Artsy.requestToken(impressionism)
 
-request
-    .post(apiUrl)
-    .send({ client_id: clientID, client_secret: clientSecret })
-    .end(function(err, res) {
-        if (err) {
-          console.log('error')
-        }
-        xappToken = res.body.token
-        console.log(xappToken)
 
-        query()
-    })
+// var getImagesOfArtists = function(artistArtworks) {
+//     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+//
+//     for(var i=0; i < artistArtworks.length; i++) {
+//
+//         console.log(artistArtworks.length)
+//         traverson
+//         .from(artistArtworks[i]._links.artworks.href)
+//         .jsonHal()
+//         .withRequestOptions({
+//             headers: {
+//                 'X-Xapp-Token': xappToken,
+//                 'Accept': 'application/vnd.artsy-v2+json'
+//             }
+//         })
+//         .getResource(function(error, artworks) {
+//             if (error) {
+//                 console.log('another error..')
+//             }
+//             if(artworks._embedded.artworks.length > 0) {
+//                 console.log(artworks)
+//                 artworkArray.push(artworks._embedded.artworks[0]._links.thumbnail.href)
+//             }
+//             if(artworkArray.length >= 2) {
+//                 getDegas()
+//             }
+//         })
+//     }
+// }
+//
+// var getDegas = function() {
+//     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+//
+//     var api = traverson
+//     .from('https://api.artsy.net/api')
+//     .jsonHal()
+//     .withRequestOptions({
+//         headers: {
+//             'X-Xapp-Token': xappToken,
+//             'Accept': 'application/vnd.artsy-v2+json'
+//         }
+//     })
+//
+//     api
+//     .newRequest()
+//     .follow('artist')
+//     .withTemplateParameters({ id: '4dadd2177129f05924000c68' })
+//     .getResource(function(error, edgarDegas) {
+//         if (error) {
+//             console.log('error!')
+//         }
+//         console.log(edgarDegas)
+//         degas = edgarDegas.name + ' | ' + 'Birthday: ' + edgarDegas.birthday + ' | ' + 'Hometown: ' + edgarDegas.hometown + ' | ' + 'Nationality: ' + edgarDegas.nationality;
+//         var artwork = edgarDegas._links.artworks.href
+//         getDegasArtwork(artwork)
+//     });
+// }
+//
+// var getDegasArtwork = function(artwork) {
+//     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+//
+//     traverson
+//     .from(artwork)
+//     .jsonHal()
+//     .withRequestOptions({
+//         headers: {
+//             'X-Xapp-Token': xappToken,
+//             'Accept': 'application/vnd.artsy-v2+json'
+//         }
+//     })
+//     .getResource(function(error, allArtwork) {
+//         if (error) {
+//             console.log('another error..')
+//         }
+//         //console.log(allArtwork)
+//         console.log(allArtwork._embedded.artworks[3].title)
+//         degasArtwork = allArtwork._embedded.artworks[3].title;
+//         degasTheDanceLesson = allArtwork._embedded.artworks[3]._links.thumbnail.href
+//         displayDegas()
+//     })
+// }
+//
+// var displayDegas = function() {
+//     elDegasBio.innerHTML = degas
+//     elDegasLink.innerHTML = degasArtwork
+//     elDegasArt.src=degasTheDanceLesson
+//
+//     elfirstArtist.innerHTML = artistArray[0].name
+//     elfirstImage.src=artworkArray[0]
+//
+//     elsecondArtist.innerHTML = artistArray[1].name
+//     elsecondImage.src=artworkArray[1]
+//
+//     elthirdArtist.innerHTML = artistArray[2].name
+//     //elthirdImage.src=artworkArray[2]  // This artist does not have artwork
+//
+//     elfourthArtist.innerHTML = artistArray[3].name
+//     //elfourthImage.src=artworkArray[3]  //This artist does not have artwork
+// }
 
-var query = function() {
-    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-
-    var api = traverson
-    .from('https://api.artsy.net/api')
-    .jsonHal()
-    .withRequestOptions({
-      headers: {
-        'X-Xapp-Token': xappToken,
-        'Accept': 'application/vnd.artsy-v2+json'
-      }
-    })
-
-    api
-    .newRequest()
-    .follow('gene', 'artists')
-    .withTemplateParameters({ id: impressionism })
-    .getResource(function(error, query) {
-        if (error) {
-            console.log('Error with the Query!')
-        }
-        //console.log(query)
-        for (var i=0; i<4; i++) {
-            //var placeholder = query._embedded.artists[Math.floor(Math.random()*5)]
-            artistArray.push(query._embedded.artists[i])
-        }
-        console.log(artistArray)
-        var artistArtworks = artistArray
-        getImagesOfArtists(artistArtworks)
-    })
-}
-
-var getImagesOfArtists = function(artistArtworks) {
-    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-
-    for(var i=0; i < artistArtworks.length; i++) {
-
-        console.log(artistArtworks.length)
-        traverson
-        .from(artistArtworks[i]._links.artworks.href)
-        .jsonHal()
-        .withRequestOptions({
-            headers: {
-                'X-Xapp-Token': xappToken,
-                'Accept': 'application/vnd.artsy-v2+json'
-            }
-        })
-        .getResource(function(error, artworks) {
-            if (error) {
-                console.log('another error..')
-            }
-            if(artworks._embedded.artworks.length > 0) {
-                console.log(artworks)
-                artworkArray.push(artworks._embedded.artworks[0]._links.thumbnail.href)
-            }
-            if(artworkArray.length >= 2) {
-                getDegas()
-            }
-        })
-    }
-}
-
-var getDegas = function() {
-    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-
-    var api = traverson
-    .from('https://api.artsy.net/api')
-    .jsonHal()
-    .withRequestOptions({
-        headers: {
-            'X-Xapp-Token': xappToken,
-            'Accept': 'application/vnd.artsy-v2+json'
-        }
-    })
-
-    api
-    .newRequest()
-    .follow('artist')
-    .withTemplateParameters({ id: '4dadd2177129f05924000c68' })
-    .getResource(function(error, edgarDegas) {
-        if (error) {
-            console.log('error!')
-        }
-        console.log(edgarDegas)
-        degas = edgarDegas.name + ' | ' + 'Birthday: ' + edgarDegas.birthday + ' | ' + 'Hometown: ' + edgarDegas.hometown + ' | ' + 'Nationality: ' + edgarDegas.nationality;
-        var artwork = edgarDegas._links.artworks.href
-        getDegasArtwork(artwork)
-    });
-}
-
-var getDegasArtwork = function(artwork) {
-    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-
-    traverson
-    .from(artwork)
-    .jsonHal()
-    .withRequestOptions({
-        headers: {
-            'X-Xapp-Token': xappToken,
-            'Accept': 'application/vnd.artsy-v2+json'
-        }
-    })
-    .getResource(function(error, allArtwork) {
-        if (error) {
-            console.log('another error..')
-        }
-        //console.log(allArtwork)
-        console.log(allArtwork._embedded.artworks[3].title)
-        degasArtwork = allArtwork._embedded.artworks[3].title;
-        degasTheDanceLesson = allArtwork._embedded.artworks[3]._links.thumbnail.href
-        displayDegas()
-    })
-}
-
-var displayDegas = function() {
-    elDegasBio.innerHTML = degas
-    elDegasLink.innerHTML = degasArtwork
-    elDegasArt.src=degasTheDanceLesson
-
-    elfirstArtist.innerHTML = artistArray[0].name
-    elfirstImage.src=artworkArray[0]
-
-    elsecondArtist.innerHTML = artistArray[1].name
-    elsecondImage.src=artworkArray[1]
-
-    elthirdArtist.innerHTML = artistArray[2].name
-    //elthirdImage.src=artworkArray[2]  // This artist does not have artwork
-
-    elfourthArtist.innerHTML = artistArray[3].name
-    //elfourthImage.src=artworkArray[3]  //This artist does not have artwork
-}
-
-},{"superagent":2,"traverson":49,"traverson-hal":5}],2:[function(require,module,exports){
+},{"./artsy.js":1}],3:[function(require,module,exports){
 /**
  * Module dependencies.
  */
@@ -1319,7 +1331,7 @@ request.put = function(url, data, fn){
 
 module.exports = request;
 
-},{"emitter":3,"reduce":4}],3:[function(require,module,exports){
+},{"emitter":4,"reduce":5}],4:[function(require,module,exports){
 
 /**
  * Expose `Emitter`.
@@ -1485,7 +1497,7 @@ Emitter.prototype.hasListeners = function(event){
   return !! this.listeners(event).length;
 };
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 /**
  * Reduce `arr` with `fn`.
@@ -1510,7 +1522,7 @@ module.exports = function(arr, fn, initial){
   
   return curr;
 };
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var halfred = require('halfred');
@@ -1782,7 +1794,7 @@ function findEmbeddedWithoutIndex(ctx, resourceArray, log) {
 
 module.exports = JsonHalAdapter;
 
-},{"halfred":6}],6:[function(require,module,exports){
+},{"halfred":7}],7:[function(require,module,exports){
 var Parser = require('./lib/parser')
   , validationFlag = false;
 
@@ -1801,7 +1813,7 @@ module.exports = {
   }
 };
 
-},{"./lib/parser":8}],7:[function(require,module,exports){
+},{"./lib/parser":9}],8:[function(require,module,exports){
 'use strict';
 
 /*
@@ -1846,7 +1858,7 @@ ImmutableStack.prototype.peek = function() {
 
 module.exports = ImmutableStack;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Resource = require('./resource')
@@ -2056,7 +2068,7 @@ function pathToString(path) {
 
 module.exports = Parser;
 
-},{"./immutable_stack":7,"./resource":9}],9:[function(require,module,exports){
+},{"./immutable_stack":8,"./resource":10}],10:[function(require,module,exports){
 'use strict';
 
 function Resource(links, curies, embedded, validationIssues) {
@@ -2185,7 +2197,7 @@ Resource.prototype.validation = Resource.prototype.validationIssues;
 
 module.exports = Resource;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 // TODO Replace by a proper lightweight logging module, suited for the browser
@@ -2236,7 +2248,7 @@ minilog.enable = function() {
 
 module.exports = minilog;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -2248,7 +2260,7 @@ module.exports = {
   }
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var superagent = require('superagent');
@@ -2363,7 +2375,7 @@ function handleResponse(callback) {
 
 module.exports = new Request();
 
-},{"superagent":2}],13:[function(require,module,exports){
+},{"superagent":3}],14:[function(require,module,exports){
 'use strict';
 
 /*
@@ -2407,7 +2419,7 @@ var _s = {
 
 module.exports = _s;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 var resolveUrl = require('resolve-url');
@@ -2416,7 +2428,7 @@ exports.resolve = function(from, to) {
   return resolveUrl(from, to);
 };
 
-},{"resolve-url":47}],15:[function(require,module,exports){
+},{"resolve-url":48}],16:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -2454,7 +2466,7 @@ exports.abortError = function abortError() {
   return error;
 };
 
-},{"minilog":10}],16:[function(require,module,exports){
+},{"minilog":11}],17:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -2590,7 +2602,7 @@ function createTraversalHandle(t) {
   };
 }
 
-},{"./abort_traversal":15,"./http_requests":18,"./is_continuation":19,"./transforms/apply_transforms":25,"./transforms/check_http_status":26,"./transforms/continuation_to_doc":27,"./transforms/continuation_to_response":28,"./transforms/convert_embedded_doc_to_response":29,"./transforms/execute_http_request":31,"./transforms/execute_last_http_request":32,"./transforms/extract_doc":33,"./transforms/extract_response":34,"./transforms/extract_url":35,"./transforms/fetch_last_resource":36,"./transforms/parse":39,"./walker":45,"minilog":10}],17:[function(require,module,exports){
+},{"./abort_traversal":16,"./http_requests":19,"./is_continuation":20,"./transforms/apply_transforms":26,"./transforms/check_http_status":27,"./transforms/continuation_to_doc":28,"./transforms/continuation_to_response":29,"./transforms/convert_embedded_doc_to_response":30,"./transforms/execute_http_request":32,"./transforms/execute_last_http_request":33,"./transforms/extract_doc":34,"./transforms/extract_response":35,"./transforms/extract_url":36,"./transforms/fetch_last_resource":37,"./transforms/parse":40,"./walker":46,"minilog":11}],18:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3209,7 +3221,7 @@ function shallowCloneArray(array) {
 
 module.exports = Builder;
 
-},{"./abort_traversal":15,"./actions":16,"./media_type_registry":21,"./media_types":22,"./merge_recursive":23,"minilog":10,"request":12,"util":11}],18:[function(require,module,exports){
+},{"./abort_traversal":16,"./actions":17,"./media_type_registry":22,"./media_types":23,"./merge_recursive":24,"minilog":11,"request":13,"util":12}],19:[function(require,module,exports){
 (function (process){
 'use strict';
 var minilog = require('minilog')
@@ -3315,14 +3327,14 @@ exports.executeHttpRequest = function(t, request, method, callback) {
 };
 
 }).call(this,require('_process'))
-},{"./abort_traversal":15,"./transforms/detect_content_type":30,"./transforms/get_options_for_step":38,"_process":50,"minilog":10}],19:[function(require,module,exports){
+},{"./abort_traversal":16,"./transforms/detect_content_type":31,"./transforms/get_options_for_step":39,"_process":51,"minilog":11}],20:[function(require,module,exports){
 'use strict';
 
 module.exports = function isContinuation(t) {
   return t.continuation && t.step && t.step.response;
 };
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 var jsonpathLib = require('JSONPath')
@@ -3382,7 +3394,7 @@ JsonAdapter.prototype.resolveJSONPath = function(link, doc) {
 
 module.exports = JsonAdapter;
 
-},{"JSONPath":46,"minilog":10,"underscore.string":13}],21:[function(require,module,exports){
+},{"JSONPath":47,"minilog":11,"underscore.string":14}],22:[function(require,module,exports){
 'use strict';
 
 var mediaTypes = require('./media_types');
@@ -3401,7 +3413,7 @@ exports.register(mediaTypes.CONTENT_NEGOTIATION,
     require('./negotiation_adapter'));
 exports.register(mediaTypes.JSON, require('./json_adapter'));
 
-},{"./json_adapter":20,"./media_types":22,"./negotiation_adapter":24}],22:[function(require,module,exports){
+},{"./json_adapter":21,"./media_types":23,"./negotiation_adapter":25}],23:[function(require,module,exports){
 'use strict';
 
 module.exports = {
@@ -3410,7 +3422,7 @@ module.exports = {
   JSON_HAL: 'application/hal+json',
 };
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 // TODO Maybe replace with https://github.com/Raynos/xtend
@@ -3447,7 +3459,7 @@ function merge(obj1, obj2, key) {
 
 module.exports = mergeRecursive;
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 function NegotiationAdapter(log) {}
@@ -3458,7 +3470,7 @@ NegotiationAdapter.prototype.findNextStep = function(doc, link) {
 
 module.exports = NegotiationAdapter;
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (process){
 /* jshint loopfunc: true */
 'use strict';
@@ -3505,7 +3517,7 @@ function applyTransforms(transforms, t, callback) {
 module.exports = applyTransforms;
 
 }).call(this,require('_process'))
-},{"_process":50,"minilog":10}],26:[function(require,module,exports){
+},{"_process":51,"minilog":11}],27:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3559,7 +3571,7 @@ function httpError(url, httpStatus, body) {
   return error;
 }
 
-},{"../is_continuation":19,"minilog":10}],27:[function(require,module,exports){
+},{"../is_continuation":20,"minilog":11}],28:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3581,7 +3593,7 @@ module.exports = function continuationToDoc(t) {
   return true;
 };
 
-},{"../is_continuation":19,"minilog":10}],28:[function(require,module,exports){
+},{"../is_continuation":20,"minilog":11}],29:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3606,7 +3618,7 @@ module.exports = function continuationToResponse(t) {
   return true;
 };
 
-},{"../is_continuation":19,"./convert_embedded_doc_to_response":29,"minilog":10}],29:[function(require,module,exports){
+},{"../is_continuation":20,"./convert_embedded_doc_to_response":30,"minilog":11}],30:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3626,7 +3638,7 @@ module.exports = function convertEmbeddedDocToResponse(t) {
   return true;
 };
 
-},{"minilog":10}],30:[function(require,module,exports){
+},{"minilog":11}],31:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3652,7 +3664,7 @@ module.exports = function detectContentType(t, callback) {
   return true;
 };
 
-},{"../media_type_registry":21,"minilog":10}],31:[function(require,module,exports){
+},{"../media_type_registry":22,"minilog":11}],32:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3694,7 +3706,7 @@ executeLastHttpRequest.isAsync = true;
 
 module.exports = executeLastHttpRequest;
 
-},{"../abort_traversal":15,"../http_requests":18,"minilog":10}],32:[function(require,module,exports){
+},{"../abort_traversal":16,"../http_requests":19,"minilog":11}],33:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3723,7 +3735,7 @@ executeLastHttpRequest.isAsync = true;
 
 module.exports = executeLastHttpRequest;
 
-},{"../abort_traversal":15,"../http_requests":18,"minilog":10}],33:[function(require,module,exports){
+},{"../abort_traversal":16,"../http_requests":19,"minilog":11}],34:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3745,7 +3757,7 @@ module.exports = function extractDoc(t) {
   t.callback(null, t.step.doc);
 };
 
-},{"minilog":10}],34:[function(require,module,exports){
+},{"minilog":11}],35:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3768,7 +3780,7 @@ module.exports = function extractDoc(t) {
   t.callback(null, t.step.response);
 };
 
-},{"minilog":10}],35:[function(require,module,exports){
+},{"minilog":11}],36:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3798,7 +3810,7 @@ module.exports = function extractDoc(t) {
   }
 };
 
-},{"minilog":10,"url":14}],36:[function(require,module,exports){
+},{"minilog":11,"url":15}],37:[function(require,module,exports){
 'use strict';
 
 // TODO Only difference to lib/transform/fetch_resource is the continuation
@@ -3836,7 +3848,7 @@ fetchLastResource.isAsync = true;
 
 module.exports = fetchLastResource;
 
-},{"../abort_traversal":15,"../http_requests":18,"minilog":10}],37:[function(require,module,exports){
+},{"../abort_traversal":16,"../http_requests":19,"minilog":11}],38:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -3894,7 +3906,7 @@ function fetchViaHttp(t, callback) {
 module.exports = fetchResource;
 
 }).call(this,require('_process'))
-},{"../abort_traversal":15,"../http_requests":18,"../is_continuation":19,"_process":50,"minilog":10}],38:[function(require,module,exports){
+},{"../abort_traversal":16,"../http_requests":19,"../is_continuation":20,"_process":51,"minilog":11}],39:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3910,7 +3922,7 @@ module.exports = function getOptionsForStep(t) {
   return options;
 };
 
-},{"minilog":10,"util":11}],39:[function(require,module,exports){
+},{"minilog":11,"util":12}],40:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -3961,7 +3973,7 @@ function jsonError(url, body) {
   return error;
 }
 
-},{"../is_continuation":19,"minilog":10}],40:[function(require,module,exports){
+},{"../is_continuation":20,"minilog":11}],41:[function(require,module,exports){
 'use strict';
 
 var isContinuation = require('../is_continuation');
@@ -3976,7 +3988,7 @@ module.exports = function resetLastStep(t) {
   return true;
 };
 
-},{"../is_continuation":19}],41:[function(require,module,exports){
+},{"../is_continuation":20}],42:[function(require,module,exports){
 'use strict';
 
 var isContinuation = require('../is_continuation');
@@ -3991,7 +4003,7 @@ module.exports = function resetLastStep(t) {
   return true;
 };
 
-},{"../is_continuation":19}],42:[function(require,module,exports){
+},{"../is_continuation":20}],43:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -4024,7 +4036,7 @@ module.exports = function resolveNextUrl(t) {
   return true;
 };
 
-},{"minilog":10,"underscore.string":13,"url":14}],43:[function(require,module,exports){
+},{"minilog":11,"underscore.string":14,"url":15}],44:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -4057,7 +4069,7 @@ module.exports = function resolveUriTemplate(t) {
 
 
 
-},{"minilog":10,"underscore.string":13,"url-template":48,"util":11}],44:[function(require,module,exports){
+},{"minilog":11,"underscore.string":14,"url-template":49,"util":12}],45:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -4094,7 +4106,7 @@ function findNextStep(t, doc, link, preferEmbedded) {
   }
 }
 
-},{"minilog":10}],45:[function(require,module,exports){
+},{"minilog":11}],46:[function(require,module,exports){
 'use strict';
 
 var minilog = require('minilog')
@@ -4167,7 +4179,7 @@ function isAborted(t) {
   return t.aborted;
 }
 
-},{"./abort_traversal":15,"./is_continuation":19,"./transforms/apply_transforms":25,"./transforms/check_http_status":26,"./transforms/fetch_resource":37,"./transforms/parse":39,"./transforms/reset_continuation":40,"./transforms/reset_last_step":41,"./transforms/resolve_next_url":42,"./transforms/resolve_uri_template":43,"./transforms/switch_to_next_step":44,"minilog":10}],46:[function(require,module,exports){
+},{"./abort_traversal":16,"./is_continuation":20,"./transforms/apply_transforms":26,"./transforms/check_http_status":27,"./transforms/fetch_resource":38,"./transforms/parse":40,"./transforms/reset_continuation":41,"./transforms/reset_last_step":42,"./transforms/resolve_next_url":43,"./transforms/resolve_uri_template":44,"./transforms/switch_to_next_step":45,"minilog":11}],47:[function(require,module,exports){
 /* JSONPath 0.8.0 - XPath for JSON
  *
  * Copyright (c) 2007 Stefan Goessner (goessner.net)
@@ -4341,7 +4353,7 @@ function jsonPath(obj, expr, arg) {
 }
 })(typeof exports === 'undefined' ? this['jsonPath'] = {} : exports, typeof require == "undefined" ? null : require);
 
-},{"vm":51}],47:[function(require,module,exports){
+},{"vm":52}],48:[function(require,module,exports){
 // Copyright 2014 Simon Lydell
 // X11 (“MIT”) Licensed. (See LICENSE.)
 
@@ -4390,7 +4402,7 @@ void (function(root, factory) {
 
 }));
 
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function (root, factory) {
     if (typeof exports === 'object') {
         module.exports = factory();
@@ -4571,7 +4583,7 @@ void (function(root, factory) {
   return new UrlTemplate();
 }));
 
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4645,7 +4657,7 @@ exports.registerMediaType = mediaTypeRegistry.register;
 exports.mediaTypes = mediaTypes;
 
 }).call(this,require('_process'))
-},{"./lib/builder":17,"./lib/media_type_registry":21,"./lib/media_types":22,"_process":50,"minilog":10}],50:[function(require,module,exports){
+},{"./lib/builder":18,"./lib/media_type_registry":22,"./lib/media_types":23,"_process":51,"minilog":11}],51:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -4737,7 +4749,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 var indexOf = require('indexof');
 
 var Object_keys = function (obj) {
@@ -4877,7 +4889,7 @@ exports.createContext = Script.createContext = function (context) {
     return copy;
 };
 
-},{"indexof":52}],52:[function(require,module,exports){
+},{"indexof":53}],53:[function(require,module,exports){
 
 var indexOf = [].indexOf;
 
@@ -4888,4 +4900,4 @@ module.exports = function(arr, obj){
   }
   return -1;
 };
-},{}]},{},[1]);
+},{}]},{},[2]);
