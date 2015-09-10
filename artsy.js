@@ -4,14 +4,12 @@ var JsonHalAdapter = require('traverson-hal')
 
 var clientID = '00665d46bb4f56d42b98',
     clientSecret = '86d483720aa6dedc9c86d1129a995749',
-    apiUrl = 'https://api.artsy.net/api/tokens/xapp_token',
-    xappToken;
+    apiUrl = 'https://api.artsy.net/api/tokens/xapp_token'
 
 var artistArray = []
 
-
-
 module.exports = {
+    xappToken: '',
 
     requestToken: function() {
         return new Promise(
@@ -25,18 +23,15 @@ module.exports = {
                         } else {
                             resolve(res.body.token)
                         }
-                        //xappToken = res.body.token
-                        //console.log(xappToken)
-                        //return promise
                     })
             }
         )
     },
-    queryForCategory: function(CATEGORY) {
+    queryForCategory: function(START, PATH, CATEGORY) {
         traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 
         var api = traverson
-        .from('https://api.artsy.net/api')
+        .from(START)
         .jsonHal()
         .withRequestOptions({
           headers: {
@@ -47,15 +42,13 @@ module.exports = {
 
         api
         .newRequest()
-        .follow('gene', 'artists')
+        .follow(PATH)
         .withTemplateParameters({ id: CATEGORY })
         .getResource(function(error, resource) {
             if (error) {
                 console.log('Error with the Query!')
             }
-            //console.log(resource)
             for (var i=0; i<4; i++) {
-                //var placeholder = resource._embedded.artists[Math.floor(Math.random()*5)]
                 artistArray.push(resource._embedded.artists[i])
             }
             console.log(artistArray)

@@ -22,49 +22,54 @@ var elfourthArtist = document.getElementById('fourthArtist');
 var elfourthImage = document.getElementById('fourthImage');
 
 var impressionism = '4d90d191dcdd5f44a500004e';
+
+var fromRoot = 'https://api.artsy.net/api'
+var toPath = ['gene', 'artists']
+
 var impressionismDescription;
 
-var artworkArray = [];
+var artworkArray = []
+//var artistArray = []
 //var xappToken;
 
 Artsy.requestToken()
     .then(function(xappToken) {
         console.log(xappToken)
         Artsy.xappToken = xappToken
-        Artsy.queryForCategory(impressionism)
+        Artsy.queryForCategory(fromRoot, toPath, impressionism)
     })
 
 
-// var getImagesOfArtists = function(artistArtworks) {
-//     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-//
-//     for(var i=0; i < artistArtworks.length; i++) {
-//
-//         console.log(artistArtworks.length)
-//         traverson
-//         .from(artistArtworks[i]._links.artworks.href)
-//         .jsonHal()
-//         .withRequestOptions({
-//             headers: {
-//                 'X-Xapp-Token': xappToken,
-//                 'Accept': 'application/vnd.artsy-v2+json'
-//             }
-//         })
-//         .getResource(function(error, artworks) {
-//             if (error) {
-//                 console.log('another error..')
-//             }
-//             if(artworks._embedded.artworks.length > 0) {
-//                 console.log(artworks)
-//                 artworkArray.push(artworks._embedded.artworks[0]._links.thumbnail.href)
-//             }
-//             if(artworkArray.length >= 2) {
-//                 getDegas()
-//             }
-//         })
-//     }
-// }
-//
+var getImagesOfArtists = function(artistArtworks) {
+    traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+
+    for(var i=0; i < artistArtworks.length; i++) {
+
+        console.log(artistArtworks.length)
+        traverson
+        .from(artistArtworks[i]._links.artworks.href)
+        .jsonHal()
+        .withRequestOptions({
+            headers: {
+                'X-Xapp-Token': xappToken,
+                'Accept': 'application/vnd.artsy-v2+json'
+            }
+        })
+        .getResource(function(error, artworks) {
+            if (error) {
+                console.log('another error..')
+            }
+            if(artworks._embedded.artworks.length > 0) {
+                console.log(artworks)
+                artworkArray.push(artworks._embedded.artworks[0]._links.thumbnail.href)
+            }
+            if(artworkArray.length >= 2) {
+                getDegas()
+            }
+        })
+    }
+}
+
 // var getDegas = function() {
 //     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 //
