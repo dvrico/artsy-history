@@ -1,32 +1,38 @@
-var Artsy = require('./artsy.js')
+'use strict';
 
+var Artsy = require('./artsy.js');
 
 var degas, degasArtwork;
 var degasTheDanceLesson;
-var elDegasBio = document.getElementById('artistBio')
-var elDegasLink = document.getElementById('artistLink')
-var elDegasArt = document.getElementById('artistImage')
+var elDegasBio = document.getElementById('artistBio');
+var elDegasLink = document.getElementById('artistLink');
+var elDegasArt = document.getElementById('artistImage');
 
-var elfirstArtist = document.getElementById('firstArtist')
-var elfirstImage = document.getElementById('firstImage')
+var elfirstArtist = document.getElementById('firstArtist');
+var elfirstImage = document.getElementById('firstImage');
 var firstArtistArtwork;
 
-var elsecondArtist = document.getElementById('secondArtist')
-var elsecondImage = document.getElementById('secondImage')
+var elsecondArtist = document.getElementById('secondArtist');
+var elsecondImage = document.getElementById('secondImage');
 
-var elthirdArtist = document.getElementById('thirdArtist')
-var elthirdImage = document.getElementById('thirdImage')
+var elthirdArtist = document.getElementById('thirdArtist');
+var elthirdImage = document.getElementById('thirdImage');
 
-var elfourthArtist = document.getElementById('fourthArtist')
-var elfourthImage = document.getElementById('fourthImage')
+var elfourthArtist = document.getElementById('fourthArtist');
+var elfourthImage = document.getElementById('fourthImage');
 
-var impressionism = '4d90d191dcdd5f44a500004e'
+var impressionism = '4d90d191dcdd5f44a500004e';
 var impressionismDescription;
-var artistArray = []
-var artworkArray = []
 
+var artworkArray = [];
+//var xappToken;
 
-Artsy.requestToken(impressionism)
+Artsy.requestToken()
+    .then(function(xappToken) {
+        console.log(xappToken)
+        Artsy.xappToken = xappToken
+        Artsy.queryForCategory(impressionism)
+    })
 
 
 // var getImagesOfArtists = function(artistArtworks) {

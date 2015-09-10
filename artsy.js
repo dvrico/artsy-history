@@ -9,21 +9,28 @@ var clientID = '00665d46bb4f56d42b98',
 
 var artistArray = []
 
+
+
 module.exports = {
 
-    requestToken: function(CATEGORY) {
-        request
-            .post(apiUrl)
-            .send({ client_id: clientID, client_secret: clientSecret })
-            .end(function(err, res) {
-                if (err) {
-                  console.log('error')
-                }
-                xappToken = res.body.token
-                console.log(xappToken)
-
-                module.exports.queryForCategory(CATEGORY)
-            })
+    requestToken: function() {
+        return new Promise(
+            function(resolve, reject) {
+                request
+                    .post(apiUrl)
+                    .send({ client_id: clientID, client_secret: clientSecret })
+                    .end(function(err, res) {
+                        if (err) {
+                            reject()
+                        } else {
+                            resolve(res.body.token)
+                        }
+                        //xappToken = res.body.token
+                        //console.log(xappToken)
+                        //return promise
+                    })
+            }
+        )
     },
     queryForCategory: function(CATEGORY) {
         traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
@@ -33,7 +40,7 @@ module.exports = {
         .jsonHal()
         .withRequestOptions({
           headers: {
-            'X-Xapp-Token': xappToken,
+            'X-Xapp-Token': this.xappToken,
             'Accept': 'application/vnd.artsy-v2+json'
           }
         })
