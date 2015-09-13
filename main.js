@@ -11,6 +11,42 @@
         }
     }])
 
+    app.controller('CategoryController', ['$scope', function($scope) {
+        $scope.displayCategoriesSelected = 4
+        $scope.whenGameIsReady = false
+        $scope.selectCategory = function(category) {
+            console.log(category)
+            $scope.displayCategoriesSelected--
+            if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;
+        }
+
+        $scope.categories = [
+            {
+                name: 'Impressionism',
+                id: '4d90d191dcdd5f44a500004e',
+                description: '',
+            },
+            {
+                name: 'Expressionism',
+                id: '53c801277261695ed8c70100',
+                description: '',
+            },
+            {
+                name: 'High Renaissance',
+                id: '4f26f327dc7f670001000126',
+                description: '',
+            },
+            {
+                name: 'Romanticism',
+                id: '4d90d192dcdd5f44a500006b',
+                description: '',
+            }
+        ]
+
+    }])
+
+
+
 })(); //END OF IIFE
 
 'use strict';
