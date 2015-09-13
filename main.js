@@ -1,6 +1,6 @@
 'use strict';
 
-var Artsy = require('./artsy.js');
+var Artsy = require('./js/artsy.js');
 
 var degas, degasArtwork;
 var degasTheDanceLesson;
