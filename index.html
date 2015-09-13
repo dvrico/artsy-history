@@ -2,9 +2,12 @@
 <html>
     <head>
         <title>Artsy</title>
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="/css/bootstrap.css">
+        <link rel="stylesheet" href="/css/animate.css">
+        <link rel="stylesheet" href="/css/main.css">
     </head>
-    <body>
+    <body ng-app='main'>
+        <!--
         <h1>Art(sy) History Flashcards</h1>
         <p id="artistBio">Default Artist</p>
         <p id="artistLink">Default Link</p>
@@ -21,6 +24,30 @@
 
         <p id="fourthArtist"></p>
         <img id="fourthImage" />
+        !-->
+        <section ng-controller="PanelController as panel">
+
+            <div class="panel" ng-show="panel.isSelected(1)">
+                <h1>Art(sy) History Flashcards</h1>
+                <button type="button" ng-click="panel.selectTab(2)">Begin!</button>
+            </div>
+
+            <div class="panel" ng-show="panel.isSelected(2)">
+                <h1>Select Categories</h1>
+                <button type="button" ng-click="panel.selectTab(3)">Start!</button>
+            </div>
+
+            <div class="panel" ng-show="panel.isSelected(3)">
+                <h1>Round Starts</h1>
+                <button type="button" ng-click="panel.selectTab(4)">Finish the Game</button>
+            </div>
+
+            <div class="panel" ng-show="panel.isSelected(4)">
+                <h1>Finish</h1>
+                <button type="button" ng-click="panel.selectTab(1)">Start Over</button>
+            </div>
+
+        </section>
 
         <script src="js/angular.min.js"></script>
         <script src="bundlee.js"></script>
