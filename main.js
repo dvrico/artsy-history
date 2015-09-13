@@ -9,18 +9,42 @@
         this.isSelected = function(checkTab) {
             return this.tab === checkTab
         }
-    }])
+    }]) // END OF PANEL CONTROLLER
 
-    app.controller('CategoryController', ['$scope', function($scope) {
+    app.controller('GameController', ['$scope', function($scope) {
+
+        $scope.categoriesForGameSession = []
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
+
+        var defaultCategoryMessage = 'Oops, something went wrong..'
+
+        $scope.displayCategoryOne = defaultCategoryMessage
+        $scope.displayCategoryTwo = defaultCategoryMessage
+        $scope.displayCategoryThree = defaultCategoryMessage
+        $scope.displayCategoryFour = defaultCategoryMessage
+
         $scope.selectCategory = function(category) {
-            console.log(category)
+
+            $scope.categoriesForGameSession.push(category)
             $scope.displayCategoriesSelected--
             if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;
         }
 
-        $scope.categories = [
+        $scope.gameStart = function(number) {
+            console.log($scope.categoriesForGameSession)
+            //var gameRound = new GameSession($scope.categoriesForGameSession)
+            // console.log(gameRound.categoryOne)
+            // console.log(gameRound.categoryTwo)
+            // console.log(gameRound.categoryThree)
+            // console.log(gameRound.categoryFour)
+            // $scope.displayCategoryOne = gameRound.categoryOne
+            // $scope.displayCategoryTwo = gameRound.categoryTwo
+            // $scope.displayCategoryThree = gameRound.categoryThree
+            // $scope.displayCategoryFour = number
+        }
+
+        $scope.categorylib = [
             {
                 name: 'Impressionism',
                 id: '4d90d191dcdd5f44a500004e',
@@ -43,9 +67,21 @@
             }
         ]
 
-    }])
+    }]) // END OF GAME CONTROLLER
 
+    function GameSession (categories) {
+        this.categoryOne = categories[0].name
+        this.categoryTwo = categories[1].name
+        this.categoryThree = categories[2].name
+        this.categoryFour = categories[3].name
 
+        this.correctArtwork
+        this.correctArtist
+        this.artistOne
+        this.artistTwo
+        this.artistThree
+        this.artistFour
+    }
 
 })(); //END OF IIFE
 

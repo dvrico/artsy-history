@@ -36,21 +36,26 @@
                 <footer><p>Made at the Recurse Center, Summer 2 batch. Check out more projects by @dvrico.</p></footer>
             </div>
 
-            <div class="panel" ng-controller="CategoryController" ng-show="panel.isSelected(2)">
+            <div class="panel" ng-controller="GameController" ng-show="panel.isSelected(2)">
                 <h1>Select Categories</h1>
-                <button type="button" ng-click="selectCategory(categories[0])">Impressionism</button>
-                <button type="button" ng-click="selectCategory(categories[1])">Expressionism</button>
-                <button type="button" ng-click="selectCategory(categories[2])">High Renaissance</button>
-                <button type="button" ng-click="selectCategory(categories[3])">Romanticism</button>
+                <button type="button" ng-click="selectCategory(categorylib[0])">Impressionism</button>
+                <button type="button" ng-click="selectCategory(categorylib[1])">Expressionism</button>
+                <button type="button" ng-click="selectCategory(categorylib[2])">High Renaissance</button>
+                <button type="button" ng-click="selectCategory(categorylib[3])">Romanticism</button>
 
                 <section>
                     <div ng-hide="whenGameIsReady">Choose <span>{{displayCategoriesSelected}}</span> more categories to start!</div>
-                    <div ng-show="whenGameIsReady" ng-click="panel.selectTab(3)">Start!</div>
+                    <button ng-show="whenGameIsReady" ng-click="panel.selectTab(3)"type="button"><div ng-click="gameStart(42)">Start!</div></button>
                 </section>
             </div>
 
-            <div class="panel" ng-show="panel.isSelected(3)">
+            <div class="panel" ng-controller="GameController" ng-show="panel.isSelected(3)">
                 <h1>Round Starts</h1>
+                <p>{{displayCategoryOne}}</p>
+                <p>{{displayCategoryTwo}}</p>
+                <p>{{displayCategoryThree}}</p>
+                <p>{{displayCategoryFour}}</p>
+                <button type="button" ng-click="gameStart(42)">Update?</button>
                 <button type="button" ng-click="panel.selectTab(4)">Finish the Game</button>
             </div>
 
