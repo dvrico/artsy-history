@@ -31,17 +31,16 @@
             if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;
         }
 
-        $scope.gameStart = function(number) {
-            console.log($scope.categoriesForGameSession)
-            //var gameRound = new GameSession($scope.categoriesForGameSession)
-            // console.log(gameRound.categoryOne)
-            // console.log(gameRound.categoryTwo)
-            // console.log(gameRound.categoryThree)
-            // console.log(gameRound.categoryFour)
-            // $scope.displayCategoryOne = gameRound.categoryOne
-            // $scope.displayCategoryTwo = gameRound.categoryTwo
-            // $scope.displayCategoryThree = gameRound.categoryThree
-            // $scope.displayCategoryFour = number
+        $scope.gameStart = function() {
+            var gameRound = new GameSession($scope.categoriesForGameSession)
+            console.log(gameRound.categoryOne)
+            console.log(gameRound.categoryTwo)
+            console.log(gameRound.categoryThree)
+            console.log(gameRound.categoryFour)
+            $scope.displayCategoryOne = gameRound.categoryOne
+            $scope.displayCategoryTwo = gameRound.categoryTwo
+            $scope.displayCategoryThree = gameRound.categoryThree
+            $scope.displayCategoryFour = gameRound.categoryFour
         }
 
         $scope.categorylib = [
