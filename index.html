@@ -42,10 +42,12 @@
             <div class="panel" ng-show="panel.isSelected(3)">
                 <h1>Round Starts</h1>
                 <div><img id='correctArtwork' src=""></div>
-                <p>{{displayCategoryOne}}</p>
-                <p>{{displayCategoryTwo}}</p>
-                <p>{{displayCategoryThree}}</p>
-                <p>{{displayCategoryFour}}</p>
+                <ul class="multipleChoice">
+                    <li ng-click="checkAnswer(1)">{{displayCategoryOne}}</li>
+                    <li ng-click="checkAnswer(2)">{{displayCategoryTwo}}</li>
+                    <li ng-click="checkAnswer(3)">{{displayCategoryThree}}</li>
+                    <li ng-click="checkAnswer(4)">{{displayCategoryFour}}</li>
+                </ul>
                 <button type="button" ng-click="panel.selectTab(4)">Finish the Game</button>
             </div>
 

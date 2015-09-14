@@ -31,20 +31,22 @@
         }
 
         $scope.gameStart = function() {
-            var gameRound = new GameSession($scope.categoriesForGameSession)
-            getArtsyData(gameRound)
+            $scope.gameRound = new GameSession($scope.categoriesForGameSession)
+            getArtsyData($scope.gameRound)
 
             //correctArtwork.src = 'https://d32dm0rphc51dk.cloudfront.net/yCsq0Uq-rUQ5FuTVM--FPA/large.jpg'
-            $scope.displayCategoryOne = gameRound.categoryOne
-            $scope.displayCategoryTwo = gameRound.categoryTwo
-            $scope.displayCategoryThree = gameRound.categoryThree
-            $scope.displayCategoryFour = gameRound.categoryFour
+            $scope.displayCategoryOne = $scope.gameRound.categoryOne
+            $scope.displayCategoryTwo = $scope.gameRound.categoryTwo
+            $scope.displayCategoryThree = $scope.gameRound.categoryThree
+            $scope.displayCategoryFour = $scope.gameRound.categoryFour
 
         }
 
         function getArtsyData(gameRound) {
 
             // The data-fetching promise blob of doom
+
+            // (This can become a method of the GameSession Object later on... away from everything else)
 
             Artsy.requestToken()
                 .then(function(xappToken) {
@@ -60,17 +62,17 @@
                     var toPath = ['gene', 'artists']
                     var choosenCategory = categories[randomItem($scope.categoriesForGameSession)]
                     console.log("choosen category: ", choosenCategory)
-                    gameRound.correctCategory = choosenCategory.name
+                    $scope.gameRound.correctCategory = choosenCategory.name
 
                     Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                         .then(function(arrayOfArtists) {
                             // Pause and set artists to multiple choice variables.
 
                             console.log("Second then: ", arrayOfArtists)
-                            gameRound.artistOne = arrayOfArtists[0].name
-                            gameRound.artistTwo = arrayOfArtists[1].name
-                            gameRound.artistThree = arrayOfArtists[2].name
-                            gameRound.artistFour = arrayOfArtists[3].name
+                            $scope.gameRound.artistOne = arrayOfArtists[0].name
+                            $scope.gameRound.artistTwo = arrayOfArtists[1].name
+                            $scope.gameRound.artistThree = arrayOfArtists[2].name
+                            $scope.gameRound.artistFour = arrayOfArtists[3].name
                             return arrayOfArtists;
 
                         }).then(function(arrayOfArtists) {
@@ -89,19 +91,19 @@
                                     var correctArtwork = document.getElementById('correctArtwork')
                                     // Set other data to variables for info in the round.
 
-                                    gameRound.correctArtworkObject = artwork[0]
-                                    gameRound.correctArtworkTitle = gameRound.correctArtworkObject.title
+                                    $scope.gameRound.correctArtworkObject = artwork[0]
+                                    $scope.gameRound.correctArtworkTitle = $scope.gameRound.correctArtworkObject.title
                                     // Set artwork link now rather than later
-                                    correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href
-                                    gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
+                                    correctArtwork.src = $scope.gameRound.correctArtworkObject._links.thumbnail.href
+                                    $scope.gameRound.correctArtworkLink = $scope.gameRound.correctArtworkObject._links.thumbnail.href
 
-                                    console.log("gameRound: ", gameRound.correctArtworkObject)
-                                    console.log("gameRound: ", gameRound.correctArtworkTitle)
-                                    console.log("gameRound: ", gameRound.correctArtworkLink)
-                                    //console.log(gameRound.correctArtworkLink)
-                                    //$scope.updateDisplay(gameRound)
+                                    console.log("gameRound: ", $scope.gameRound.correctArtworkObject)
+                                    console.log("gameRound: ", $scope.gameRound.correctArtworkTitle)
+                                    console.log("gameRound: ", $scope.gameRound.correctArtworkLink)
+                                    //console.log($scope.gameRound.correctArtworkLink)
+                                    //$scope.updateDisplay($scope.gameRound)
 
-                                    //return gameRound.correctArtworkLink
+                                    //return $scope.gameRound.correctArtworkLink
                                 })
                         })
                 })
@@ -113,11 +115,11 @@
         }
 
         $scope.updateDisplay = function(gameRound) {
-            $scope.displayCategoryOne = gameRound.artistOne
-            $scope.displayCategoryTwo = gameRound.artistTwo
-            $scope.displayCategoryThree = gameRound.artistThree
-            $scope.displayCategoryFour = gameRound.artistFour
-            //console.log("gameRound Object: ", gameRound.artistOne)
+            $scope.displayCategoryOne = $scope.gameRound.artistOne
+            $scope.displayCategoryTwo = $scope.gameRound.artistTwo
+            $scope.displayCategoryThree = $scope.gameRound.artistThree
+            $scope.displayCategoryFour = $scope.gameRound.artistFour
+            //console.log("$scope.gameRound Object: ", $scope.gameRound.artistOne)
             //console.log("display: ", $scope.displayCategoryOne)
             console.log($scope.displayCategoryOne)
             console.log($scope.displayCategoryTwo)
@@ -125,6 +127,27 @@
             console.log($scope.displayCategoryFour)
         }
 
+        $scope.checkAnswer = function(number) {
+            switch (number) {
+                case 1:
+                    console.log($scope.gameRound.correctCategory === $scope.displayCategoryOne)
+                    break;
+                case 2:
+                    console.log($scope.gameRound.correctCategory === $scope.displayCategoryTwo)
+                    break;
+                case 3:
+                    console.log($scope.gameRound.correctCategory === $scope.displayCategoryThree)
+                    break;
+                case 4:
+                    console.log($scope.gameRound.correctCategory === $scope.displayCategoryFour)
+                    break;
+                default:
+                    console.log('Something went wrong with checkAnswer()')
+                    break;
+            }
+        }
+
+        // This is probably go into its own file once the lib gets bigger.
         $scope.categorylib = [
             {
                 name: 'Impressionism',
@@ -149,7 +172,6 @@
         ]
 
     }]) // END OF GAME CONTROLLER
-
 
 
     function GameSession (categories) {
