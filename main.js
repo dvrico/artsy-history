@@ -48,10 +48,13 @@
 
             Artsy.requestToken()
                 .then(function(xappToken) {
-                    console.log("First then: ", xappToken)
+                    // Get Auth-token first
                     //Artsy.xappToken = xappToken
                     return xappToken;
                 }).then(function(xappToken) {
+                    // Choose a random category and return an array of artists.
+                    // Pause and set variables for future reference.
+
                     var categories = $scope.categoriesForGameSession
                     var fromRoot = 'https://api.artsy.net/api'
                     var toPath = ['gene', 'artists']
@@ -61,6 +64,8 @@
 
                     Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                         .then(function(arrayOfArtists) {
+                            // Pause and set artists to multiple choice variables.
+
                             console.log("Second then: ", arrayOfArtists)
                             gameRound.artistOne = arrayOfArtists[0].name
                             gameRound.artistTwo = arrayOfArtists[1].name
@@ -69,16 +74,24 @@
                             return arrayOfArtists;
 
                         }).then(function(arrayOfArtists) {
+                            // Choose a random artist from the group to be the
+                            // correct anwser to the current round.
+
                             var choosenArtist = arrayOfArtists[randomItem(arrayOfArtists)]
                             console.log("Choosen Artist: ", choosenArtist)
 
                             Artsy.getArtwork(choosenArtist, xappToken)
                                 .then(function(artwork) {
+                                    // Grab all available artwork from choose artist and
+                                    // select a random artwork to be the question.
+
                                     console.log("From main.js side: ", artwork)
                                     var correctArtwork = document.getElementById('correctArtwork')
+                                    // Set other data to variables for info in the round.
 
                                     gameRound.correctArtworkObject = artwork[0]
                                     gameRound.correctArtworkTitle = gameRound.correctArtworkObject.title
+                                    // Set artwork link now rather than later
                                     correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href
                                     gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
 
@@ -88,7 +101,7 @@
                                     //console.log(gameRound.correctArtworkLink)
                                     //$scope.updateDisplay(gameRound)
 
-                                    return gameRound.correctArtworkLink
+                                    //return gameRound.correctArtworkLink
                                 })
                         })
                 })
@@ -157,146 +170,4 @@
         this.artistFour;
     }
 
-    GameSession.prototype.fetchToken = function() {
-        return Artsy.requestToken()
-            .then(function(xappToken) {
-                console.log("From fetchToken: ", xappToken)
-                //Artsy.xappToken = xappToken
-                return xappToken;
-            })
-    }
-
-    GameSession.prototype.fetchArtists = function(categories, xappToken) {
-        var fromRoot = 'https://api.artsy.net/api'
-        var toPath = ['gene', 'artists']
-        var random = Math.floor(Math.random() * (categories.length + 1))
-
-        return Artsy.getArtists(fromRoot, toPath, categories[0].id, xappToken)
-            .then(function(arrayOfArtists) {
-                console.log("From fetchArtists: ", arrayOfArtists)
-                return arrayOfArtists;
-            })
-    }
-
 })(); //END OF IIFE
-
-'use strict';
-
-
-
-var degas, degasArtwork;
-var degasTheDanceLesson;
-var elDegasBio = document.getElementById('artistBio');
-var elDegasLink = document.getElementById('artistLink');
-var elDegasArt = document.getElementById('artistImage');
-
-var elfirstArtist = document.getElementById('firstArtist');
-var elfirstImage = document.getElementById('firstImage');
-var firstArtistArtwork;
-
-var elsecondArtist = document.getElementById('secondArtist');
-var elsecondImage = document.getElementById('secondImage');
-
-var elthirdArtist = document.getElementById('thirdArtist');
-var elthirdImage = document.getElementById('thirdImage');
-
-var elfourthArtist = document.getElementById('fourthArtist');
-var elfourthImage = document.getElementById('fourthImage');
-
-var impressionism = '4d90d191dcdd5f44a500004e';
-
-var fromRoot = 'https://api.artsy.net/api'
-var toPath = ['gene', 'artists']
-
-var impressionismDescription;
-
-var artworkArray = []
-//var artistArray = []
-//var xappToken;
-
-// Artsy.requestToken()
-//     .then(function(xappToken) {
-//         console.log(xappToken)
-//         Artsy.xappToken = xappToken
-//         Artsy.queryForCategory(fromRoot, toPath, impressionism)
-//         getArtworksFromArtists()
-//     })
-//
-// var getArtworksFromArtists = function() {
-//     Artsy.getArtwork(Artsy.artistArtworks)
-//         .then(function(artwork) {
-//             artworkArray = artwork
-//         })
-// }
-
-
-
-// var getDegas = function() {
-//     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-//
-//     var api = traverson
-//     .from('https://api.artsy.net/api')
-//     .jsonHal()
-//     .withRequestOptions({
-//         headers: {
-//             'X-Xapp-Token': xappToken,
-//             'Accept': 'application/vnd.artsy-v2+json'
-//         }
-//     })
-//
-//     api
-//     .newRequest()
-//     .follow('artist')
-//     .withTemplateParameters({ id: '4dadd2177129f05924000c68' })
-//     .getResource(function(error, edgarDegas) {
-//         if (error) {
-//             console.log('error!')
-//         }
-//         console.log(edgarDegas)
-//         degas = edgarDegas.name + ' | ' + 'Birthday: ' + edgarDegas.birthday + ' | ' + 'Hometown: ' + edgarDegas.hometown + ' | ' + 'Nationality: ' + edgarDegas.nationality;
-//         var artwork = edgarDegas._links.artworks.href
-//         getDegasArtwork(artwork)
-//     });
-// }
-//
-// var getDegasArtwork = function(artwork) {
-//     traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
-//
-//     traverson
-//     .from(artwork)
-//     .jsonHal()
-//     .withRequestOptions({
-//         headers: {
-//             'X-Xapp-Token': xappToken,
-//             'Accept': 'application/vnd.artsy-v2+json'
-//         }
-//     })
-//     .getResource(function(error, allArtwork) {
-//         if (error) {
-//             console.log('another error..')
-//         }
-//         //console.log(allArtwork)
-//         console.log(allArtwork._embedded.artworks[3].title)
-//         degasArtwork = allArtwork._embedded.artworks[3].title;
-//         degasTheDanceLesson = allArtwork._embedded.artworks[3]._links.thumbnail.href
-//         displayDegas()
-//     })
-// }
-//
-// var displayDegas = function() {
-//     elDegasBio.innerHTML = degas
-//     elDegasLink.innerHTML = degasArtwork
-//     elDegasArt.src=degasTheDanceLesson
-//
-//     elfirstArtist.innerHTML = artistArray[0].name
-//     elfirstImage.src=artworkArray[0]
-//
-//     elsecondArtist.innerHTML = artistArray[1].name
-//     elsecondImage.src=artworkArray[1]
-//
-//     elthirdArtist.innerHTML = artistArray[2].name
-//     //elthirdImage.src=artworkArray[2]  // This artist does not have artwork
-//
-//     elfourthArtist.innerHTML = artistArray[3].name
-//     //elfourthImage.src=artworkArray[3]  //This artist does not have artwork
-// }
