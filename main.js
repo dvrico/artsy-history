@@ -33,14 +33,23 @@
 
         $scope.gameStart = function() {
             var gameRound = new GameSession($scope.categoriesForGameSession)
-            console.log(gameRound.categoryOne)
-            console.log(gameRound.categoryTwo)
-            console.log(gameRound.categoryThree)
-            console.log(gameRound.categoryFour)
+            //getArtsyData(gameRound)
+            gameRound.fetchToken()
+                .then(function() {
+                    gameRound.fetchArtists($scope.categoriesForGameSession)
+                        .then(function(data) {
+                            console.log(data)
+                        })
+                })
+
             $scope.displayCategoryOne = gameRound.categoryOne
             $scope.displayCategoryTwo = gameRound.categoryTwo
             $scope.displayCategoryThree = gameRound.categoryThree
             $scope.displayCategoryFour = gameRound.categoryFour
+        }
+
+        function getArtsyData(roundData) {
+
         }
 
         $scope.categorylib = [
@@ -68,6 +77,8 @@
 
     }]) // END OF GAME CONTROLLER
 
+    var Artsy = require('./js/artsy.js')
+
     function GameSession (categories) {
         this.categoryOne = categories[0].name
         this.categoryTwo = categories[1].name
@@ -82,11 +93,40 @@
         this.artistFour
     }
 
+    GameSession.prototype.fetchToken = function() {
+        return new Promise(
+            function(resolve, reject) {
+                resolve(
+                    Artsy.requestToken()
+                    .then(function(xappToken) {
+                        console.log(xappToken)
+                        Artsy.xappToken = xappToken
+                    })
+                )
+            }
+        )
+    }
+
+    GameSession.prototype.fetchArtists = function(categories) {
+        var fromRoot = 'https://api.artsy.net/api'
+        var toPath = ['gene', 'artists']
+        var random = Math.floor(Math.random() * (categories.length + 1))
+
+        return new Promise(
+            function(resolve, reject) {
+                resolve(
+                    Artsy.queryForCategory(fromRoot, toPath, categories[random].id)
+                )
+            }
+        )
+    }
+
+
 })(); //END OF IIFE
 
 'use strict';
 
-var Artsy = require('./js/artsy.js');
+
 
 var degas, degasArtwork;
 var degasTheDanceLesson;
@@ -118,20 +158,20 @@ var artworkArray = []
 //var artistArray = []
 //var xappToken;
 
-Artsy.requestToken()
-    .then(function(xappToken) {
-        console.log(xappToken)
-        Artsy.xappToken = xappToken
-        Artsy.queryForCategory(fromRoot, toPath, impressionism)
-        getArtworksFromArtists()
-    })
-
-var getArtworksFromArtists = function() {
-    Artsy.getArtwork(Artsy.artistArtworks)
-        .then(function(artwork) {
-            artworkArray = artwork
-        })
-}
+// Artsy.requestToken()
+//     .then(function(xappToken) {
+//         console.log(xappToken)
+//         Artsy.xappToken = xappToken
+//         Artsy.queryForCategory(fromRoot, toPath, impressionism)
+//         getArtworksFromArtists()
+//     })
+//
+// var getArtworksFromArtists = function() {
+//     Artsy.getArtwork(Artsy.artistArtworks)
+//         .then(function(artwork) {
+//             artworkArray = artwork
+//         })
+// }
 
 
 
