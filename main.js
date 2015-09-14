@@ -12,7 +12,7 @@
     }]) // END OF PANEL CONTROLLER
 
     app.controller('GameController', ['$scope', function($scope) {
-
+        var Artsy = require('./js/artsy.js')
         $scope.categoriesForGameSession = []
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
@@ -34,13 +34,17 @@
             var gameRound = new GameSession($scope.categoriesForGameSession)
             getArtsyData(gameRound)
 
+            //correctArtwork.src = 'https://d32dm0rphc51dk.cloudfront.net/yCsq0Uq-rUQ5FuTVM--FPA/large.jpg'
             $scope.displayCategoryOne = gameRound.categoryOne
             $scope.displayCategoryTwo = gameRound.categoryTwo
             $scope.displayCategoryThree = gameRound.categoryThree
             $scope.displayCategoryFour = gameRound.categoryFour
+
         }
 
         function getArtsyData(gameRound) {
+
+            // The data-fetching promise blob of doom
 
             Artsy.requestToken()
                 .then(function(xappToken) {
@@ -71,15 +75,20 @@
                             Artsy.getArtwork(choosenArtist, xappToken)
                                 .then(function(artwork) {
                                     console.log("From main.js side: ", artwork)
+                                    var correctArtwork = document.getElementById('correctArtwork')
+
                                     gameRound.correctArtworkObject = artwork[0]
                                     gameRound.correctArtworkTitle = gameRound.correctArtworkObject.title
+                                    correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href
                                     gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
 
                                     console.log("gameRound: ", gameRound.correctArtworkObject)
                                     console.log("gameRound: ", gameRound.correctArtworkTitle)
                                     console.log("gameRound: ", gameRound.correctArtworkLink)
                                     //console.log(gameRound.correctArtworkLink)
-                                    updateDisplay(gameRound)
+                                    //$scope.updateDisplay(gameRound)
+
+                                    return gameRound.correctArtworkLink
                                 })
                         })
                 })
@@ -90,14 +99,17 @@
             return Math.floor(Math.random() * (array.length))
         }
 
-        function updateDisplay(gameRound) {
+        $scope.updateDisplay = function(gameRound) {
             $scope.displayCategoryOne = gameRound.artistOne
             $scope.displayCategoryTwo = gameRound.artistTwo
             $scope.displayCategoryThree = gameRound.artistThree
             $scope.displayCategoryFour = gameRound.artistFour
             //console.log("gameRound Object: ", gameRound.artistOne)
             //console.log("display: ", $scope.displayCategoryOne)
-            console.log(gameRound.correctCategory)
+            console.log($scope.displayCategoryOne)
+            console.log($scope.displayCategoryTwo)
+            console.log($scope.displayCategoryThree)
+            console.log($scope.displayCategoryFour)
         }
 
         $scope.categorylib = [
@@ -125,7 +137,7 @@
 
     }]) // END OF GAME CONTROLLER
 
-    var Artsy = require('./js/artsy.js')
+
 
     function GameSession (categories) {
         this.categoryOne = categories[0].name
