@@ -12,7 +12,7 @@ module.exports = {
     xappToken: '',
     artistArtworks: [],
     artworkArray: [],
-
+    //artistArray: [],        // This was outside module.exports before testing.
 
     requestToken: function() {
         return new Promise(
@@ -31,33 +31,38 @@ module.exports = {
             }
         )
     },
-    queryForCategory: function(START, PATH, CATEGORY) {
+    findArtistsInCategory: function(START, PATH, CATEGORY, TOKEN) {
         traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 
-        var api = traverson
-            .from(START)
-            .jsonHal()
-            .withRequestOptions({
-                headers: {
-                    'X-Xapp-Token': this.xappToken,
-                    'Accept': 'application/vnd.artsy-v2+json'
-                }
-            })
+        return new Promise(
+            function(resolve, reject) {
+                var api = traverson
+                    .from(START)
+                    .jsonHal()
+                    .withRequestOptions({
+                        headers: {
+                            'X-Xapp-Token': TOKEN,
+                            'Accept': 'application/vnd.artsy-v2+json'
+                        }
+                    })
 
-        api
-        .newRequest()
-        .follow(PATH)
-        .withTemplateParameters({ id: CATEGORY })
-        .getResource(function(error, resource) {
-            if (error) {
-                console.log('Error with the Query!')
+                api
+                .newRequest()
+                .follow(PATH)
+                .withTemplateParameters({ id: CATEGORY })
+                .getResource(function(error, resource) {
+                    if (error) {
+                        reject()
+                    }
+                    for (var i=0; i<4; i++) {
+                        artistArray.push(resource._embedded.artists[i])
+                    }
+                    resolve(artistArray)
+                    //console.log(artistArray)
+                    //this.artistArtworks = artistArray
+                })
             }
-            for (var i=0; i<4; i++) {
-                artistArray.push(resource._embedded.artists[i])
-            }
-            console.log(artistArray)
-            this.artistArtworks = artistArray
-        })
+        )
     },
     getArtwork: function(artistArtworks) {
         return new Promise (function(resolve, reject) {

@@ -25,7 +25,6 @@
         $scope.displayCategoryFour = defaultCategoryMessage
 
         $scope.selectCategory = function(category) {
-
             $scope.categoriesForGameSession.push(category)
             $scope.displayCategoriesSelected--
             if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;
@@ -33,14 +32,7 @@
 
         $scope.gameStart = function() {
             var gameRound = new GameSession($scope.categoriesForGameSession)
-            //getArtsyData(gameRound)
-            gameRound.fetchToken()
-                .then(function() {
-                    gameRound.fetchArtists($scope.categoriesForGameSession)
-                        .then(function(data) {
-                            console.log(data)
-                        })
-                })
+            getArtsyData(gameRound)
 
             $scope.displayCategoryOne = gameRound.categoryOne
             $scope.displayCategoryTwo = gameRound.categoryTwo
@@ -48,8 +40,49 @@
             $scope.displayCategoryFour = gameRound.categoryFour
         }
 
-        function getArtsyData(roundData) {
+        function getArtsyData(gameRound) {
 
+            Artsy.requestToken()
+                .then(function(xappToken) {
+                    console.log("First then: ", xappToken)
+                    //Artsy.xappToken = xappToken
+                    return xappToken;
+                }).then(function(xappToken) {
+                    var categories = $scope.categoriesForGameSession
+                    var fromRoot = 'https://api.artsy.net/api'
+                    var toPath = ['gene', 'artists']
+                    var random = Math.floor(Math.random() * (categories.length + 1))
+
+                    Artsy.findArtistsInCategory(fromRoot, toPath, categories[random].id, xappToken)
+                        .then(function(arrayOfArtists) {
+                            console.log("Second then: ", arrayOfArtists)
+                            gameRound.artistOne = arrayOfArtists[0].name
+                            gameRound.artistTwo = arrayOfArtists[1].name
+                            gameRound.artistThree = arrayOfArtists[2].name
+                            gameRound.artistFour = arrayOfArtists[3].name
+                            updateDisplay(gameRound)
+                            return arrayOfArtists;
+                        })
+                })
+
+            // forRoundx.fetchToken()
+            //     .then(function(xappToken) {
+            //         console.log("From getArtsyData", xappToken)
+            //         forRoundx.fetchArtists($scope.categoriesForGameSession, xappToken)
+            //             .then(function(arrayOfAritsts) {
+            //                 console.log("From getArtsyData: ", arrayOfArtists)
+            //             })
+            //     })
+
+        }
+
+        function updateDisplay(gameRound) {
+            $scope.displayCategoryOne = gameRound.artistOne
+            $scope.displayCategoryTwo = gameRound.artistTwo
+            $scope.displayCategoryThree = gameRound.artistThree
+            $scope.displayCategoryFour = gameRound.artistFour
+            console.log(gameRound.artistOne)
+            console.log($scope.displayCategoryOne)
         }
 
         $scope.categorylib = [
@@ -94,33 +127,25 @@
     }
 
     GameSession.prototype.fetchToken = function() {
-        return new Promise(
-            function(resolve, reject) {
-                resolve(
-                    Artsy.requestToken()
-                    .then(function(xappToken) {
-                        console.log(xappToken)
-                        Artsy.xappToken = xappToken
-                    })
-                )
-            }
-        )
+        return Artsy.requestToken()
+            .then(function(xappToken) {
+                console.log("From fetchToken: ", xappToken)
+                //Artsy.xappToken = xappToken
+                return xappToken;
+            })
     }
 
-    GameSession.prototype.fetchArtists = function(categories) {
+    GameSession.prototype.fetchArtists = function(categories, xappToken) {
         var fromRoot = 'https://api.artsy.net/api'
         var toPath = ['gene', 'artists']
         var random = Math.floor(Math.random() * (categories.length + 1))
 
-        return new Promise(
-            function(resolve, reject) {
-                resolve(
-                    Artsy.queryForCategory(fromRoot, toPath, categories[random].id)
-                )
-            }
-        )
+        return Artsy.findArtistsInCategory(fromRoot, toPath, categories[0].id, xappToken)
+            .then(function(arrayOfArtists) {
+                console.log("From fetchArtists: ", arrayOfArtists)
+                return arrayOfArtists;
+            })
     }
-
 
 })(); //END OF IIFE
 
