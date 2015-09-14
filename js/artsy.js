@@ -65,8 +65,9 @@ module.exports = {
         )
     },
     getArtwork: function(artistArtworks) {
+        traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
+
         return new Promise (function(resolve, reject) {
-            traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
             console.log(artistArtworks.length)
             for(var i=0; i < artistArtworks.length; i++) {
 

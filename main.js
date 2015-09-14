@@ -51,9 +51,9 @@
                     var categories = $scope.categoriesForGameSession
                     var fromRoot = 'https://api.artsy.net/api'
                     var toPath = ['gene', 'artists']
-                    var random = Math.floor(Math.random() * (categories.length + 1))
+                    var choosenCategory = categories[randomItem($scope.categoriesForGameSession)]
 
-                    Artsy.findArtistsInCategory(fromRoot, toPath, categories[random].id, xappToken)
+                    Artsy.findArtistsInCategory(fromRoot, toPath, choosenCategory.id, xappToken)
                         .then(function(arrayOfArtists) {
                             console.log("Second then: ", arrayOfArtists)
                             gameRound.artistOne = arrayOfArtists[0].name
@@ -62,18 +62,15 @@
                             gameRound.artistFour = arrayOfArtists[3].name
                             updateDisplay(gameRound)
                             return arrayOfArtists;
+                        }).then(function(arrayOfArtists) {
+                            console.log(arrayOfArtists)
                         })
                 })
 
-            // forRoundx.fetchToken()
-            //     .then(function(xappToken) {
-            //         console.log("From getArtsyData", xappToken)
-            //         forRoundx.fetchArtists($scope.categoriesForGameSession, xappToken)
-            //             .then(function(arrayOfAritsts) {
-            //                 console.log("From getArtsyData: ", arrayOfArtists)
-            //             })
-            //     })
+        }
 
+        function randomItem(array) {
+            return Math.floor(Math.random() * (array.length + 1))
         }
 
         function updateDisplay(gameRound) {
@@ -81,8 +78,8 @@
             $scope.displayCategoryTwo = gameRound.artistTwo
             $scope.displayCategoryThree = gameRound.artistThree
             $scope.displayCategoryFour = gameRound.artistFour
-            console.log(gameRound.artistOne)
-            console.log($scope.displayCategoryOne)
+            console.log("gameRound Object: ", gameRound.artistOne)
+            console.log("display: ", $scope.displayCategoryOne)
         }
 
         $scope.categorylib = [
