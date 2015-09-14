@@ -1,7 +1,7 @@
 (function() {
     var app = angular.module('main', []);
 
-    app.controller('PanelController', ['$scope', function($scope) {
+    app.controller('PanelController', [function() {
         this.tab = 1
         this.selectTab = function(setTab) {
             this.tab = setTab
@@ -52,25 +52,42 @@
                     var fromRoot = 'https://api.artsy.net/api'
                     var toPath = ['gene', 'artists']
                     var choosenCategory = categories[randomItem($scope.categoriesForGameSession)]
+                    console.log("choosen category: ", choosenCategory)
+                    gameRound.correctCategory = choosenCategory.name
 
-                    Artsy.findArtistsInCategory(fromRoot, toPath, choosenCategory.id, xappToken)
+                    Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                         .then(function(arrayOfArtists) {
                             console.log("Second then: ", arrayOfArtists)
                             gameRound.artistOne = arrayOfArtists[0].name
                             gameRound.artistTwo = arrayOfArtists[1].name
                             gameRound.artistThree = arrayOfArtists[2].name
                             gameRound.artistFour = arrayOfArtists[3].name
-                            updateDisplay(gameRound)
                             return arrayOfArtists;
+
                         }).then(function(arrayOfArtists) {
-                            console.log(arrayOfArtists)
+                            var choosenArtist = arrayOfArtists[randomItem(arrayOfArtists)]
+                            console.log("Choosen Artist: ", choosenArtist)
+
+                            Artsy.getArtwork(choosenArtist, xappToken)
+                                .then(function(artwork) {
+                                    console.log("From main.js side: ", artwork)
+                                    gameRound.correctArtworkObject = artwork[0]
+                                    gameRound.correctArtworkTitle = gameRound.correctArtworkObject.title
+                                    gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
+
+                                    console.log("gameRound: ", gameRound.correctArtworkObject)
+                                    console.log("gameRound: ", gameRound.correctArtworkTitle)
+                                    console.log("gameRound: ", gameRound.correctArtworkLink)
+                                    //console.log(gameRound.correctArtworkLink)
+                                    updateDisplay(gameRound)
+                                })
                         })
                 })
 
         }
 
         function randomItem(array) {
-            return Math.floor(Math.random() * (array.length + 1))
+            return Math.floor(Math.random() * (array.length))
         }
 
         function updateDisplay(gameRound) {
@@ -78,8 +95,9 @@
             $scope.displayCategoryTwo = gameRound.artistTwo
             $scope.displayCategoryThree = gameRound.artistThree
             $scope.displayCategoryFour = gameRound.artistFour
-            console.log("gameRound Object: ", gameRound.artistOne)
-            console.log("display: ", $scope.displayCategoryOne)
+            //console.log("gameRound Object: ", gameRound.artistOne)
+            //console.log("display: ", $scope.displayCategoryOne)
+            console.log(gameRound.correctCategory)
         }
 
         $scope.categorylib = [
@@ -115,12 +133,16 @@
         this.categoryThree = categories[2].name
         this.categoryFour = categories[3].name
 
-        this.correctArtwork
-        this.correctArtist
-        this.artistOne
-        this.artistTwo
-        this.artistThree
-        this.artistFour
+        this.correctArtworkObject;
+        this.correctArtworkTitle;
+        this.correctArtworkLink;
+        this.correctArtist;
+        this.correctCategory;
+
+        this.artistOne;
+        this.artistTwo;
+        this.artistThree;
+        this.artistFour;
     }
 
     GameSession.prototype.fetchToken = function() {
@@ -137,7 +159,7 @@
         var toPath = ['gene', 'artists']
         var random = Math.floor(Math.random() * (categories.length + 1))
 
-        return Artsy.findArtistsInCategory(fromRoot, toPath, categories[0].id, xappToken)
+        return Artsy.getArtists(fromRoot, toPath, categories[0].id, xappToken)
             .then(function(arrayOfArtists) {
                 console.log("From fetchArtists: ", arrayOfArtists)
                 return arrayOfArtists;

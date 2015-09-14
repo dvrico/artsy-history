@@ -31,7 +31,7 @@ module.exports = {
             }
         )
     },
-    findArtistsInCategory: function(START, PATH, CATEGORY, TOKEN) {
+    getArtists: function(START, PATH, CATEGORY, TOKEN) {
         traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 
         return new Promise(
@@ -64,39 +64,28 @@ module.exports = {
             }
         )
     },
-    getArtwork: function(artistArtworks) {
+    getArtwork: function(ARTIST, TOKEN) {
         traverson.registerMediaType(JsonHalAdapter.mediaType, JsonHalAdapter)
 
         return new Promise (function(resolve, reject) {
-            console.log(artistArtworks.length)
-            for(var i=0; i < artistArtworks.length; i++) {
-
-                console.log(artistArtworks.length)
-                traverson
-                .from(artistArtworks[i]._links.artworks.href)
-                .jsonHal()
-                .withRequestOptions({
-                    headers: {
-                        'X-Xapp-Token': this.xappToken,
-                        'Accept': 'application/vnd.artsy-v2+json'
-                    }
-                })
-                .getResource(function(error, artworks) {
-                    if (error) {
-                        console.log('another error..')
-                        reject()
-                    } else {
-                        if(artworks._embedded.artworks.length > 0) {
-                            console.log(artworks)
-                            this.artworkArray.push(artworks._embedded.artworks[0]._links.thumbnail.href)
-                        }
-                        if(this.artworkArray.length >= 2) {
-                            //getDegas()
-                            resolve(this.artworkArray)
-                        }
-                    }
-                })
-            }
+            traverson
+            .from(ARTIST._links.artworks.href)
+            .jsonHal()
+            .withRequestOptions({
+                headers: {
+                    'X-Xapp-Token': TOKEN,
+                    'Accept': 'application/vnd.artsy-v2+json'
+                }
+            })
+            .getResource(function(error, resource) {
+                if (error) {
+                    console.log('another error..')
+                    reject()
+                } else {
+                    console.log(resource)
+                    resolve(resource._embedded.artworks)
+                }
+            })
         })
     }
 } // END OF ARTSY OBJECT
