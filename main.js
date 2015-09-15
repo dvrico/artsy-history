@@ -1,18 +1,8 @@
 (function() {
     var app = angular.module('main', []);
 
-    app.controller('PanelController', [function() {
-        this.tab = 1
-        this.selectTab = function(setTab) {
-            this.tab = setTab
-        }
-        this.isSelected = function(checkTab) {
-            return this.tab === checkTab
-        }
-    }]) // END OF PANEL CONTROLLER
-
     app.controller('GameController', ['$scope', function($scope) {
-
+        //Panel Controller got sucked in by game controller..
         $scope.panelTab = 1
         $scope.panelSelectTab = function(setTab) {
             $scope.panelTab = setTab
@@ -23,6 +13,7 @@
 
         $scope.categoriesForGameSession = []
         $scope.displayRound = 0
+        $scope.displayScore = 0
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
 
@@ -72,6 +63,7 @@
                 case 1:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryOne)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryOne) {
+                        $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
@@ -79,6 +71,7 @@
                 case 2:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryTwo)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryTwo) {
+                        $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
@@ -86,6 +79,7 @@
                 case 3:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryThree)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryThree) {
+                        $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
@@ -93,6 +87,7 @@
                 case 4:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryFour)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryFour) {
+                        $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
@@ -108,24 +103,28 @@
                 case 1:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistOne)
                     if($scope.gameRound.correctArtist === $scope.displayArtistOne) {
+                        $scope.displayScore += 2
                         checkGameRounds()
                     }
                     break;
                 case 2:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistTwo)
                     if($scope.gameRound.correctArtist === $scope.displayArtistTwo) {
+                        $scope.displayScore += 2
                         checkGameRounds()
                     }
                     break;
                 case 3:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistThree)
                     if($scope.gameRound.correctArtist === $scope.displayArtistThree) {
+                        $scope.displayScore += 2
                         checkGameRounds()
                     }
                     break;
                 case 4:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistFour)
                     if($scope.gameRound.correctArtist === $scope.displayArtistFour) {
+                        $scope.displayScore += 2
                         checkGameRounds()
                     }
                     break;

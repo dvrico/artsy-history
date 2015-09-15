@@ -41,6 +41,7 @@
 
             <div class="panel" ng-show="panelIsSelected(3)">
                 <h1>Round <span>{{displayRound}}</span></h1>
+                <h2>Score: <span>{{displayScore}}</span> pts.</h2>
                 <div><img id='correctArtwork' src=""></div>
                 <ul class="multipleChoice" ng-hide="showSecondSetOfChoices">
                     <li ng-click="checkFirstSet(1)">{{displayCategoryOne}}</li>
@@ -59,6 +60,8 @@
 
             <div class="panel" ng-show="panelIsSelected(4)">
                 <h1>Finish</h1>
+                <h2>You Scored: {{displayScore}}pts!</h2>
+                <h2>Congrats!</h2>
                 <button type="button" ng-click="panelSelectTab(1)">Start Over</button>
             </div>
 
