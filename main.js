@@ -13,7 +13,7 @@
 
     app.controller('GameController', ['$scope', function($scope) {
 
-        $scope.showFirstSetOfchoices = false
+        $scope.showSecondSetOfChoices = false
         $scope.categoriesForGameSession = []
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
@@ -25,27 +25,28 @@
         $scope.displayCategoryThree = defaultCategoryMessage
         $scope.displayCategoryFour = defaultCategoryMessage
 
+        $scope.displayArtistOne = defaultCategoryMessage
+        $scope.displayArtistTwo = defaultCategoryMessage
+        $scope.displayArtistThree = defaultCategoryMessage
+        $scope.displayArtistFour = defaultCategoryMessage
+
         $scope.selectCategory = function(category) {
             $scope.categoriesForGameSession.push(category)
             $scope.displayCategoriesSelected--
             if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;
         }
 
-        $scope.gameStart = function() {
+        $scope.newRound = function() {
             $scope.gameRound = new GameSession($scope.categoriesForGameSession)
-            console.log($scope.gameRound.allCategories)
             $scope.gameRound.getArtsyData($scope.gameRound)
+            displayRound($scope.gameRound)
+        }
 
+        displayRound =  function(gameRound) {
             $scope.displayCategoryOne = $scope.gameRound.categoryOne
             $scope.displayCategoryTwo = $scope.gameRound.categoryTwo
             $scope.displayCategoryThree = $scope.gameRound.categoryThree
             $scope.displayCategoryFour = $scope.gameRound.categoryFour
-
-            $scope.displayArtistOne = defaultCategoryMessage
-            $scope.displayArtistTwo = defaultCategoryMessage
-            $scope.displayArtistThree = defaultCategoryMessage
-            $scope.displayArtistFour = defaultCategoryMessage
-
         }
 
         updateDisplay = function(gameRound) {
@@ -53,9 +54,6 @@
             $scope.displayArtistTwo = $scope.gameRound.artistTwo
             $scope.displayArtistThree = $scope.gameRound.artistThree
             $scope.displayArtistFour = $scope.gameRound.artistFour
-
-            console.log('Scope: ', $scope.displayArtistOne)
-            console.log('Object: ', $scope.gameRound.artistOne)
         }
 
         $scope.checkFirstSet = function(number) {
@@ -63,28 +61,28 @@
                 case 1:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryOne)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryOne) {
-                        $scope.showFirstSetOfChoices = true
+                        $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
                     break;
                 case 2:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryTwo)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryTwo) {
-                        $scope.showFirstSetOfChoices = true
+                        $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
                     break;
                 case 3:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryThree)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryThree) {
-                        $scope.showFirstSetOfChoices = true
+                        $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
                     break;
                 case 4:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryFour)
                     if($scope.gameRound.correctCategory === $scope.displayCategoryFour) {
-                        $scope.showFirstSetOfChoices = true
+                        $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.gameRound)
                     }
                     break;

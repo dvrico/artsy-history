@@ -35,20 +35,20 @@
 
                 <section>
                     <div ng-hide="whenGameIsReady">Choose <span>{{displayCategoriesSelected}}</span> more categories to start!</div>
-                    <button ng-show="whenGameIsReady" ng-click="panel.selectTab(3)"type="button"><div ng-click="gameStart()">Start!</div></button>
+                    <button ng-show="whenGameIsReady" ng-click="panel.selectTab(3)"type="button"><div ng-click="newRound()">Start!</div></button>
                 </section>
             </div>
 
             <div class="panel" ng-show="panel.isSelected(3)">
                 <h1>Round Starts</h1>
                 <div><img id='correctArtwork' src=""></div>
-                <ul class="multipleChoice" ng-hide="showFirstSetOfChoices">
+                <ul class="multipleChoice" ng-hide="showSecondSetOfChoices">
                     <li ng-click="checkFirstSet(1)">{{displayCategoryOne}}</li>
                     <li ng-click="checkFirstSet(2)">{{displayCategoryTwo}}</li>
                     <li ng-click="checkFirstSet(3)">{{displayCategoryThree}}</li>
                     <li ng-click="checkFirstSet(4)">{{displayCategoryFour}}</li>
                 </ul>
-                <ul class="multipleChoice" ng-show="showFirstSetOfChoices">
+                <ul class="multipleChoice" ng-show="showSecondSetOfChoices">
                     <li ng-click="checkSecondSet(1)">{{displayArtistOne}}</li>
                     <li ng-click="checkSecondSet(2)">{{displayArtistTwo}}</li>
                     <li ng-click="checkSecondSet(3)">{{displayArtistThree}}</li>
