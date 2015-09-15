@@ -42,11 +42,17 @@
             <div class="panel" ng-show="panel.isSelected(3)">
                 <h1>Round Starts</h1>
                 <div><img id='correctArtwork' src=""></div>
-                <ul class="multipleChoice">
-                    <li ng-click="checkAnswer(1)">{{displayCategoryOne}}</li>
-                    <li ng-click="checkAnswer(2)">{{displayCategoryTwo}}</li>
-                    <li ng-click="checkAnswer(3)">{{displayCategoryThree}}</li>
-                    <li ng-click="checkAnswer(4)">{{displayCategoryFour}}</li>
+                <ul class="multipleChoice" ng-hide="showFirstSetOfChoices">
+                    <li ng-click="checkFirstSet(1)">{{displayCategoryOne}}</li>
+                    <li ng-click="checkFirstSet(2)">{{displayCategoryTwo}}</li>
+                    <li ng-click="checkFirstSet(3)">{{displayCategoryThree}}</li>
+                    <li ng-click="checkFirstSet(4)">{{displayCategoryFour}}</li>
+                </ul>
+                <ul class="multipleChoice" ng-show="showFirstSetOfChoices">
+                    <li ng-click="checkSecondSet(1)">{{displayArtistOne}}</li>
+                    <li ng-click="checkSecondSet(2)">{{displayArtistTwo}}</li>
+                    <li ng-click="checkSecondSet(3)">{{displayArtistThree}}</li>
+                    <li ng-click="checkSecondSet(4)">{{displayArtistFour}}</li>
                 </ul>
                 <button type="button" ng-click="panel.selectTab(4)">Finish the Game</button>
             </div>

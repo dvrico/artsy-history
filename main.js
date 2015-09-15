@@ -13,6 +13,7 @@
 
     app.controller('GameController', ['$scope', function($scope) {
         var Artsy = require('./js/artsy.js')
+        $scope.showFirstSetOfchoices = false
         $scope.categoriesForGameSession = []
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
@@ -39,6 +40,11 @@
             $scope.displayCategoryTwo = $scope.gameRound.categoryTwo
             $scope.displayCategoryThree = $scope.gameRound.categoryThree
             $scope.displayCategoryFour = $scope.gameRound.categoryFour
+
+            $scope.displayArtistOne = defaultCategoryMessage
+            $scope.displayArtistTwo = defaultCategoryMessage
+            $scope.displayArtistThree = defaultCategoryMessage
+            $scope.displayArtistFour = defaultCategoryMessage
 
         }
 
@@ -81,6 +87,8 @@
 
                             var choosenArtist = arrayOfArtists[randomItem(arrayOfArtists)]
                             console.log("Choosen Artist: ", choosenArtist)
+                            $scope.gameRound.correctArtist = choosenArtist.name
+                            console.log('correct artist: ', $scope.gameRound.correctArtist)
 
                             Artsy.getArtwork(choosenArtist, xappToken)
                                 .then(function(artwork) {
@@ -115,34 +123,67 @@
         }
 
         $scope.updateDisplay = function(gameRound) {
-            $scope.displayCategoryOne = $scope.gameRound.artistOne
-            $scope.displayCategoryTwo = $scope.gameRound.artistTwo
-            $scope.displayCategoryThree = $scope.gameRound.artistThree
-            $scope.displayCategoryFour = $scope.gameRound.artistFour
-            //console.log("$scope.gameRound Object: ", $scope.gameRound.artistOne)
-            //console.log("display: ", $scope.displayCategoryOne)
-            console.log($scope.displayCategoryOne)
-            console.log($scope.displayCategoryTwo)
-            console.log($scope.displayCategoryThree)
-            console.log($scope.displayCategoryFour)
+            $scope.displayArtistOne = $scope.gameRound.artistOne
+            $scope.displayArtistTwo = $scope.gameRound.artistTwo
+            $scope.displayArtistThree = $scope.gameRound.artistThree
+            $scope.displayArtistFour = $scope.gameRound.artistFour
+
+            console.log('Scope: ', $scope.displayArtistOne)
+            console.log('Object: ', $scope.gameRound.artistOne)
         }
 
-        $scope.checkAnswer = function(number) {
+        $scope.checkFirstSet = function(number) {
             switch (number) {
                 case 1:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryOne)
+                    if($scope.gameRound.correctCategory === $scope.displayCategoryOne) {
+                        $scope.showFirstSetOfChoices = true
+                        $scope.updateDisplay($scope.gameRound)
+                    }
                     break;
                 case 2:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryTwo)
+                    if($scope.gameRound.correctCategory === $scope.displayCategoryTwo) {
+                        $scope.showFirstSetOfChoices = true
+                        $scope.updateDisplay($scope.gameRound)
+                    }
                     break;
                 case 3:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryThree)
+                    if($scope.gameRound.correctCategory === $scope.displayCategoryThree) {
+                        $scope.showFirstSetOfChoices = true
+                        $scope.updateDisplay($scope.gameRound)
+                    }
                     break;
                 case 4:
                     console.log($scope.gameRound.correctCategory === $scope.displayCategoryFour)
+                    if($scope.gameRound.correctCategory === $scope.displayCategoryFour) {
+                        $scope.showFirstSetOfChoices = true
+                        $scope.updateDisplay($scope.gameRound)
+                    }
                     break;
                 default:
-                    console.log('Something went wrong with checkAnswer()')
+                    console.log('Something went wrong with checkFirstSet()')
+                    break;
+            }
+        }
+
+        $scope.checkSecondSet = function(number) {
+            switch (number) {
+                case 1:
+                    console.log($scope.gameRound.correctArtist === $scope.displayArtistOne)
+                    break;
+                case 2:
+                    console.log($scope.gameRound.correctArtist === $scope.displayArtistTwo)
+                    break;
+                case 3:
+                    console.log($scope.gameRound.correctArtist === $scope.displayArtistThree)
+                    break;
+                case 4:
+                    console.log($scope.gameRound.correctArtist === $scope.displayArtistFour)
+                    break;
+                default:
+                    console.log('Something went wrong with checkSecondSet()')
                     break;
             }
         }
