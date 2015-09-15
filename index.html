@@ -15,18 +15,18 @@
 
 
         !-->
-        <section ng-controller="PanelController as panel">
+        <section>
 
-            <div class="panel" ng-show="panel.isSelected(1)">
+            <div class="panel" ng-show="panelIsSelected(1)">
                 <h1>Art(sy) History Study</h1>
                 <p>Whether you need to study the great masters for a class,
                 or you're an art history nerd, you can use this flashcard tool to study up on the artists of antiquity.</p>
                 <p>This tool was only made possible because of the Artsy API and their amazing collection of artwork. Check them out for more resources.</p>
-                <button type="button" ng-click="panel.selectTab(2)">Let's Get Started</button>
+                <button type="button" ng-click="panelSelectTab(2)">Let's Get Started</button>
                 <footer><p>Made at the Recurse Center, Summer 2 batch. Check out more projects by @dvrico.</p></footer>
             </div>
 
-            <div class="panel" ng-show="panel.isSelected(2)">
+            <div class="panel" ng-show="panelIsSelected(2)">
                 <h1>Select Categories</h1>
                 <button type="button" ng-click="selectCategory(categorylib[0])">Impressionism</button>
                 <button type="button" ng-click="selectCategory(categorylib[1])">Expressionism</button>
@@ -35,12 +35,12 @@
 
                 <section>
                     <div ng-hide="whenGameIsReady">Choose <span>{{displayCategoriesSelected}}</span> more categories to start!</div>
-                    <button ng-show="whenGameIsReady" ng-click="panel.selectTab(3)"type="button"><div ng-click="newRound()">Start!</div></button>
+                    <button ng-show="whenGameIsReady" ng-click="panelSelectTab(3)"type="button"><div ng-click="newRound()">Start!</div></button>
                 </section>
             </div>
 
-            <div class="panel" ng-show="panel.isSelected(3)">
-                <h1>Round Starts</h1>
+            <div class="panel" ng-show="panelIsSelected(3)">
+                <h1>Round <span>{{displayRound}}</span></h1>
                 <div><img id='correctArtwork' src=""></div>
                 <ul class="multipleChoice" ng-hide="showSecondSetOfChoices">
                     <li ng-click="checkFirstSet(1)">{{displayCategoryOne}}</li>
@@ -54,12 +54,12 @@
                     <li ng-click="checkSecondSet(3)">{{displayArtistThree}}</li>
                     <li ng-click="checkSecondSet(4)">{{displayArtistFour}}</li>
                 </ul>
-                <button type="button" ng-click="panel.selectTab(4)">Finish the Game</button>
+                <button type="button" ng-click="panelSelectTab(4)">Finish the Game</button>
             </div>
 
-            <div class="panel" ng-show="panel.isSelected(4)">
+            <div class="panel" ng-show="panelIsSelected(4)">
                 <h1>Finish</h1>
-                <button type="button" ng-click="panel.selectTab(1)">Start Over</button>
+                <button type="button" ng-click="panelSelectTab(1)">Start Over</button>
             </div>
 
         </section>

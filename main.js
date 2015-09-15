@@ -13,8 +13,16 @@
 
     app.controller('GameController', ['$scope', function($scope) {
 
-        $scope.showSecondSetOfChoices = false
+        $scope.panelTab = 1
+        $scope.panelSelectTab = function(setTab) {
+            $scope.panelTab = setTab
+        }
+        $scope.panelIsSelected = function(checkTab) {
+            return $scope.panelTab === checkTab
+        }
+
         $scope.categoriesForGameSession = []
+        $scope.displayRound = 0
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
 
@@ -43,6 +51,9 @@
         }
 
         displayRound =  function(gameRound) {
+            $scope.displayRound++
+            $scope.showSecondSetOfChoices = false
+
             $scope.displayCategoryOne = $scope.gameRound.categoryOne
             $scope.displayCategoryTwo = $scope.gameRound.categoryTwo
             $scope.displayCategoryThree = $scope.gameRound.categoryThree
@@ -96,20 +107,44 @@
             switch (number) {
                 case 1:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistOne)
+                    if($scope.gameRound.correctArtist === $scope.displayArtistOne) {
+                        checkGameRounds()
+                    }
                     break;
                 case 2:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistTwo)
+                    if($scope.gameRound.correctArtist === $scope.displayArtistTwo) {
+                        checkGameRounds()
+                    }
                     break;
                 case 3:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistThree)
+                    if($scope.gameRound.correctArtist === $scope.displayArtistThree) {
+                        checkGameRounds()
+                    }
                     break;
                 case 4:
                     console.log($scope.gameRound.correctArtist === $scope.displayArtistFour)
+                    if($scope.gameRound.correctArtist === $scope.displayArtistFour) {
+                        checkGameRounds()
+                    }
                     break;
                 default:
                     console.log('Something went wrong with checkSecondSet()')
                     break;
             }
+        }
+
+        function checkGameRounds() {
+            if ($scope.displayRound >= 3) {
+                endGame()
+            } else {
+                $scope.newRound()
+            }
+        }
+
+        function endGame() {
+            $scope.panelTab = 4
         }
 
         // This is probably go into its own file once the lib gets bigger.
