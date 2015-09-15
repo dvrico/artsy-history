@@ -38,10 +38,30 @@
         $scope.newRound = function() {
             $scope.gameRound = new GameSession($scope.categoriesForGameSession)
             $scope.gameRound.getArtsyData($scope.gameRound)
-            displayRound($scope.gameRound)
+            displayRound()
+
+            // Artsy.requestToken()
+            //     //.then(getRandomCategory) // resolves with 1 random category
+            //     .then(getArtists)
+            //     .then(function(data) {
+            //         console.log(data);
+            //     }) // 4 artists in this category
+            //     //.then(getArtwork) // picks an artist, ensures there is artwork, returns artwork
+            //     //.then(display);
+            //
+            // function getArtists(token) {
+            //     var category = $scope.gameRound.randomizer($scope.categoriesForGameSession);
+            //     return Artsy.getArtists(token, category).then(function(artists) {
+            //         return {
+            //             token: token,
+            //             category: category,
+            //             artists: artists
+            //         };
+            //     });
+            // }
         }
 
-        displayRound =  function(gameRound) {
+        displayRound = function(gameRound) {
             $scope.displayRound++
             $scope.showSecondSetOfChoices = false
 
@@ -49,6 +69,7 @@
             $scope.displayCategoryTwo = $scope.gameRound.categoryTwo
             $scope.displayCategoryThree = $scope.gameRound.categoryThree
             $scope.displayCategoryFour = $scope.gameRound.categoryFour
+            $scope.displayArtworkTitle = $scope.gameRound.correctArtworkTitle
         }
 
         updateDisplay = function(gameRound) {
@@ -202,43 +223,45 @@
 
         // The data-fetching promise blob of doom
 
-        Artsy.requestToken()
-            .then(function(xappToken) {
-                // Choose a random category and return an array of artists.
-                // Pause and set variables for future reference.
+        return Artsy.requestToken()
+                .then(function(xappToken) {
+                    // Choose a random category and return an array of artists.
+                    // Pause and set variables for future reference.
 
-                var fromRoot = 'https://api.artsy.net/api'
-                var toPath = ['gene', 'artists']
-                var choosenCategory = gameRound.randomizer(gameRound.allCategories)
-                console.log("choosen category: ", choosenCategory)
-                gameRound.correctCategory = choosenCategory.name
+                    var fromRoot = 'https://api.artsy.net/api'
+                    var toPath = ['gene', 'artists']
+                    var choosenCategory = gameRound.randomizer(gameRound.allCategories)
+                    console.log("choosen category: ", choosenCategory)
+                    gameRound.correctCategory = choosenCategory.name
 
-                Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
-                    .then(function(arrayOfArtists) {
-                        // Pause and set artists to multiple choice variables.
-                        console.log("Second then: ", arrayOfArtists)
-                        gameRound.artistOne = arrayOfArtists[0].name
-                        gameRound.artistTwo = arrayOfArtists[1].name
-                        gameRound.artistThree = arrayOfArtists[2].name
-                        gameRound.artistFour = arrayOfArtists[3].name
+                    return Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
+                            .then(function(arrayOfArtists) {
+                                // Pause and set artists to multiple choice variables.
+                                console.log("Second then: ", arrayOfArtists)
+                                gameRound.artistOne = arrayOfArtists[0].name
+                                gameRound.artistTwo = arrayOfArtists[1].name
+                                gameRound.artistThree = arrayOfArtists[2].name
+                                gameRound.artistFour = arrayOfArtists[3].name
 
-                        findArtworkForChoosenArtist(arrayOfArtists, xappToken, gameRound)
-                    })
-            })
+                                return findArtworkForChoosenArtist(arrayOfArtists, xappToken, gameRound)
+                            })
+                })
     }
+
+
 
     function findArtworkForChoosenArtist(arrayOfArtists, xappToken, gameRound) {
         var choosenArtist = gameRound.randomizer(arrayOfArtists)
-        console.log(choosenArtist)
-        Artsy.getArtwork(choosenArtist, xappToken)
-            .then(function(artwork) {
-                if(artwork.length > 0) {
-                    assignDataToVariables(choosenArtist, artwork, gameRound)
-                } else {
-                    console.log("FOUNDZ NO ARTZ, TRYIN AGAIN.")
-                    findArtworkForChoosenArtist(arrayOfArtists, xappToken, gameRound)
-                }
-            })
+        //console.log(choosenArtist)
+        return Artsy.getArtwork(choosenArtist, xappToken)
+                .then(function(artwork) {
+                    if(artwork.length > 0) {
+                        assignDataToVariables(choosenArtist, artwork, gameRound)
+                    } else {
+                        console.log("FOUNDZ NO ARTZ, TRYIN AGAIN.")
+                        return findArtworkForChoosenArtist(arrayOfArtists, xappToken, gameRound)
+                    }
+                })
     }
 
     function assignDataToVariables(choosenArtist, artwork, gameRound) {
@@ -252,9 +275,10 @@
         console.log("title: ", gameRound.correctArtworkTitle)
         gameRound.correctArtist = choosenArtist.name
         console.log('correct artist: ', gameRound.correctArtist)
-        correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href
+        correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href.replace(/medium/g, 'large')
         gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
-        //console.log("gameRound: ", gameRound.correctArtworkLink)
+        console.log("gameRound: ", correctArtwork.src)
+        return displayRound
     }
 
 })(); //END OF IIFE
