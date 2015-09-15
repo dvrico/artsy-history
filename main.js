@@ -194,7 +194,8 @@
     }
 
     GameSession.prototype.randomizer = function(array) {
-        return Math.floor(Math.random() * (array.length))
+        var randomNumber = Math.floor(Math.random() * (array.length))
+        return array[randomNumber]
     }
 
     GameSession.prototype.getArtsyData = function(gameRound) {
@@ -203,34 +204,30 @@
 
         Artsy.requestToken()
             .then(function(xappToken) {
-                // Get Auth-token first
-                return xappToken;
-            }).then(function(xappToken) {
                 // Choose a random category and return an array of artists.
                 // Pause and set variables for future reference.
 
                 var fromRoot = 'https://api.artsy.net/api'
                 var toPath = ['gene', 'artists']
-                var choosenCategory = gameRound.allCategories[gameRound.randomizer(gameRound.allCategories)]
+                var choosenCategory = gameRound.randomizer(gameRound.allCategories)
                 console.log("choosen category: ", choosenCategory)
                 gameRound.correctCategory = choosenCategory.name
 
                 Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                     .then(function(arrayOfArtists) {
                         // Pause and set artists to multiple choice variables.
-
                         console.log("Second then: ", arrayOfArtists)
                         gameRound.artistOne = arrayOfArtists[0].name
                         gameRound.artistTwo = arrayOfArtists[1].name
                         gameRound.artistThree = arrayOfArtists[2].name
                         gameRound.artistFour = arrayOfArtists[3].name
-                        return arrayOfArtists;
 
-                    }).then(function(arrayOfArtists) {
                         // Choose a random artist from the group to be the
                         // correct anwser to the current round.
+                        // If artist does not have artwork, loops to find another
+                        // artist with artwork.
 
-                        var choosenArtist = arrayOfArtists[gameRound.randomizer(arrayOfArtists)]
+                        var choosenArtist = gameRound.randomizer(arrayOfArtists)
                         console.log("Choosen Artist: ", choosenArtist)
                         gameRound.correctArtist = choosenArtist.name
                         console.log('correct artist: ', gameRound.correctArtist)
@@ -239,27 +236,66 @@
                             .then(function(artwork) {
                                 // Grab all available artwork from choose artist and
                                 // select a random artwork to be the question.
+                                if(artwork.length > 0) {
+                                    console.log("HAZ ARTWORKZ. STOP DA LOOPZ.")
+                                    console.log("choosen artist artwork: ", artwork)
+                                    var correctArtwork = document.getElementById('correctArtwork')
 
-                                console.log("choosen artist artwork: ", artwork)
-                                var correctArtwork = document.getElementById('correctArtwork')
-                                // Set other data to variables for info in the round.
+                                    // Set other data to variables for info in the round.
+                                    gameRound.correctArtworkObject = gameRound.randomizer(artwork)
+                                    gameRound.correctArtworkTitle = gameRound.correctArtworkObject.title
 
-                                gameRound.correctArtworkObject = artwork[0]
-                                gameRound.correctArtworkTitle = gameRound.correctArtworkObject.title
-                                // Set artwork link now rather than later
-                                correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href
-                                gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
+                                    // Set artwork link now rather than later
+                                    correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href
+                                    gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
 
-                                console.log("gameRound: ", gameRound.correctArtworkObject)
-                                console.log("gameRound: ", gameRound.correctArtworkTitle)
-                                console.log("gameRound: ", gameRound.correctArtworkLink)
-                                //console.log($scope.gameRound.correctArtworkLink)
-                                //updateDisplay($scope.gameRound)
+                                    console.log("gameRound: ", gameRound.correctArtworkObject)
+                                    console.log("gameRound: ", gameRound.correctArtworkTitle)
+                                    console.log("gameRound: ", gameRound.correctArtworkLink)
 
-                                //return $scope.gameRound.correctArtworkLink
+                                    thereIsNoArtworkForArtist = false
+                                } else {
+                                    console.log("NO ARTWORKZ, RUN MEH AGAIN.")
+                                    Artsy.getArtwork()
+                                }
+
+
                             })
+
+                        // function getArtwork(array) {
+                        //     var newArtist = array[random]
+                        //     Artsy.getArtwork(choosenArtist, xappToken)
+                        //         .then(function(artwork) {
+                        //             if(!artwork) {
+                        //                 var slicedArray = array.slice(0, random).concat(array.slice(random + 1))
+                        //                 getArtwork(slicedArray)
+                        //             } else{
+                        //                 setVariables()
+                        //             }
+                        //         })
+                        // }
+
+
+
+
+
+
+
+
                     })
             })
-
     }
+
+    function findArtworkForChoosenArtist(arrayOfArtists, xappToken) {
+        var choosenArtist = randomizer(arrayOfArtists)
+        Artsy.getArtwork(choosenArtist, xappToken)
+            .then(function(artwork) {
+                if(artwork.length > 0) {
+                    assignDataToVariables()
+                } else {
+                    findArtworkForChoosenArtist(arrayOfArtists, xappToken)
+                }
+            })
+    }
+
 })(); //END OF IIFE
