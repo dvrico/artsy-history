@@ -279,7 +279,7 @@
         correctArtwork.src = gameRound.correctArtworkObject._links.thumbnail.href.replace(/medium/g, 'large')
         gameRound.correctArtworkLink = gameRound.correctArtworkObject._links.thumbnail.href
         console.log("gameRound: ", correctArtwork.src)
-        return displayRound
+        //return displayRound
     }
 
 })(); //END OF IIFE
