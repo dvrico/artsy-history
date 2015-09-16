@@ -82,7 +82,7 @@ module.exports = {
                     console.log('another error..')
                     reject()
                 } else {
-                    console.log(resource)
+                    //console.log(resource)
                     resolve(resource._embedded.artworks)
                 }
             })

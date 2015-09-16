@@ -227,22 +227,23 @@
                 .then(function(xappToken) {
                     // Choose a random category and return an array of artists.
                     // Pause and set variables for future reference.
+                    console.log('O HAI, UR TOKEN IZ GUD')
 
                     var fromRoot = 'https://api.artsy.net/api'
                     var toPath = ['gene', 'artists']
                     var choosenCategory = gameRound.randomizer(gameRound.allCategories)
-                    console.log("choosen category: ", choosenCategory)
                     gameRound.correctCategory = choosenCategory.name
+                    console.log("choosen category: ", gameRound.correctCategory)
 
                     return Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                             .then(function(arrayOfArtists) {
                                 // Pause and set artists to multiple choice variables.
-                                console.log("Second then: ", arrayOfArtists)
+                                //console.log("Second then: ", arrayOfArtists)
                                 gameRound.artistOne = arrayOfArtists[0].name
                                 gameRound.artistTwo = arrayOfArtists[1].name
                                 gameRound.artistThree = arrayOfArtists[2].name
                                 gameRound.artistFour = arrayOfArtists[3].name
-
+                                console.log('GOTZ ARTISTZ, NOW LOOK FUR ARTZ')
                                 return findArtworkForChoosenArtist(arrayOfArtists, xappToken, gameRound)
                             })
                 })

@@ -1,4 +1,61 @@
 html, body {
-  height: 100%;
-  /*background-color: blue; */
+  /*height: 100%;
+  background-color: blue; */
+}
+
+html, body, #container {
+    height: 100%;
+    min-height: 100%;
+}
+
+body > #container {
+    height: auto;
+    min-height: 100%;
+    padding-top: 75px;
+    padding-left: 75px;
+    padding-right: 75px;
+}
+
+h1 {
+  display: block;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 5em;
+}
+
+#introTextOne {
+    padding-top: 50px;
+    padding-bottom: 5px;
+}
+
+#introTextTwo {
+    padding-top: 5px;
+    padding-bottom: 20px;
+}
+
+.panelButton {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttonCategories {
+    padding: 50px 10px 50px 10px;
+}
+
+.multipleChoice {
+    margin: 5px 5px 5px 5px;
+    margin-bottom: 5em;
+}
+
+#footer {
+    clear: both;
+    position: relative;
+    z-index: 10;
+    height: 3em;
+    margin-top: -3em;
+    padding: 5px 5px;
+    text-align: center;
+    color: white;
+    background-color: black; /*The Purp #6A0BC1 */
 }
