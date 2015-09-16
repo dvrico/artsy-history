@@ -19,16 +19,6 @@
 
         var defaultCategoryMessage = 'Oops, something went wrong..'
 
-        $scope.displayCategoryOne = defaultCategoryMessage
-        $scope.displayCategoryTwo = defaultCategoryMessage
-        $scope.displayCategoryThree = defaultCategoryMessage
-        $scope.displayCategoryFour = defaultCategoryMessage
-
-        $scope.displayArtistOne = defaultCategoryMessage
-        $scope.displayArtistTwo = defaultCategoryMessage
-        $scope.displayArtistThree = defaultCategoryMessage
-        $scope.displayArtistFour = defaultCategoryMessage
-
         $scope.selectCategory = function(category) {
             $scope.categoriesForGameSession.push(category)
             $scope.displayCategoriesSelected--
@@ -36,9 +26,12 @@
         }
 
         $scope.newRound = function() {
+            $scope.panelSelectTab(3)  //Putting this in the HTML along with newRound() causes a bug where the game sometimes won't run (div/button issue)
+            resetDisplay()
             $scope.gameRound = new GameSession($scope.categoriesForGameSession)
             $scope.gameRound.getArtsyData($scope.gameRound)
             displayRound()
+            debugger
 
             // Artsy.requestToken()
             //     //.then(getRandomCategory) // resolves with 1 random category
@@ -61,7 +54,19 @@
             // }
         }
 
-        displayRound = function(gameRound) {
+        function resetDisplay() {
+            $scope.displayCategoryOne = defaultCategoryMessage
+            $scope.displayCategoryTwo = defaultCategoryMessage
+            $scope.displayCategoryThree = defaultCategoryMessage
+            $scope.displayCategoryFour = defaultCategoryMessage
+
+            $scope.displayArtistOne = defaultCategoryMessage
+            $scope.displayArtistTwo = defaultCategoryMessage
+            $scope.displayArtistThree = defaultCategoryMessage
+            $scope.displayArtistFour = defaultCategoryMessage
+        }
+
+        function displayRound(gameRound) {
             $scope.displayRound++
             $scope.showSecondSetOfChoices = false
 
@@ -72,7 +77,7 @@
             $scope.displayArtworkTitle = $scope.gameRound.correctArtworkTitle
         }
 
-        updateDisplay = function(gameRound) {
+        function updateDisplay(gameRound) {
             $scope.displayArtistOne = $scope.gameRound.artistOne
             $scope.displayArtistTwo = $scope.gameRound.artistTwo
             $scope.displayArtistThree = $scope.gameRound.artistThree
