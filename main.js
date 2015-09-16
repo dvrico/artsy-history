@@ -13,7 +13,7 @@
         }
 
         $scope.categoriesForGameSession = []
-        $scope.displayRound = 0
+        $scope.displayRoundNumber = 0
         $scope.displayScore = 0
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
@@ -33,30 +33,11 @@
             var choosenCategory = getRandomCategory($scope.newRound.allCategories)
             getArtsyData(choosenCategory)
                 .then(function(data) {
-                    assignNewRound(data)
-                    displayRound()
+                    $scope.$apply(function(){
+                        assignNewRound(data)
+                        $scope.displayRound()
+                    })
                 })
-            //displayRound()
-
-            // Artsy.requestToken()
-            //     //.then(getRandomCategory) // resolves with 1 random category
-            //     .then(getArtists)
-            //     .then(function(data) {
-            //         console.log(data);
-            //     }) // 4 artists in this category
-            //     //.then(getArtwork) // picks an artist, ensures there is artwork, returns artwork
-            //     //.then(display);
-            //
-            // function getArtists(token) {
-            //     var category = $scope.newRound.randomizer($scope.categoriesForGameSession);
-            //     return Artsy.getArtists(token, category).then(function(artists) {
-            //         return {
-            //             token: token,
-            //             category: category,
-            //             artists: artists
-            //         };
-            //     });
-            // }
         }
 
         function getArtsyData(choosenCategory) {
@@ -72,20 +53,6 @@
                                 return findArtworkForChoosenArtist(arrayOfArtists, xappToken, data)
                             })
                     })
-
-                        // console.log('O HAI, UR TOKEN IZ GUD')
-                        // return Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
-                        //         .then(function(arrayOfArtists) {
-                        //             // Pause and set artists to multiple choice variables.
-                        //             //console.log("Second then: ", arrayOfArtists)
-                        //             newRound.artistOne = arrayOfArtists[0].name
-                        //             newRound.artistTwo = arrayOfArtists[1].name
-                        //             newRound.artistThree = arrayOfArtists[2].name
-                        //             newRound.artistFour = arrayOfArtists[3].name
-                        //             console.log('GOTZ ARTISTZ, NOW LOOK FUR ARTZ')
-                        //             return findArtworkForChoosenArtist(arrayOfArtists, xappToken, newRound)
-                        //         })
-                    //})
         }
 
         function findArtworkForChoosenArtist(arrayOfArtists, xappToken, data) {
@@ -150,8 +117,9 @@
             $scope.displayArtistFour = defaultCategoryMessage
         }
 
-        function displayRound(newRound) {
-            $scope.displayRound++
+        $scope.displayRound = function(newRound) {
+            console.log(2)
+            $scope.displayRoundNumber++
             $scope.showSecondSetOfChoices = false
 
             $scope.displayCategoryOne = $scope.newRound.categoryOne
@@ -246,7 +214,7 @@
         }
 
         function checkGameRounds() {
-            if ($scope.displayRound >= 3) {
+            if ($scope.displayRoundNumber >= 3) {
                 endGame()
             } else {
                 console.log('Make new round?')
@@ -284,8 +252,6 @@
 
     }]) // END OF GAME CONTROLLER
 
-
-
     function GameSession (categories) {
         this.allCategories = categories
         this.categoryOne = categories[0].name
@@ -304,65 +270,5 @@
         this.artistThree;
         this.artistFour;
     }
-
-    GameSession.prototype.getArtsyData = function(newRound) {
-
-        // The data-fetching promise blob of doom
-
-        return Artsy.requestToken()
-                .then(function(xappToken) {
-                    // Choose a random category and return an array of artists.
-                    // Pause and set variables for future reference.
-                    console.log('O HAI, UR TOKEN IZ GUD')
-
-                    var fromRoot = 'https://api.artsy.net/api'
-                    var toPath = ['gene', 'artists']
-
-                    return Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
-                            .then(function(arrayOfArtists) {
-                                // Pause and set artists to multiple choice variables.
-                                //console.log("Second then: ", arrayOfArtists)
-                                newRound.artistOne = arrayOfArtists[0].name
-                                newRound.artistTwo = arrayOfArtists[1].name
-                                newRound.artistThree = arrayOfArtists[2].name
-                                newRound.artistFour = arrayOfArtists[3].name
-                                console.log('GOTZ ARTISTZ, NOW LOOK FUR ARTZ')
-                                return findArtworkForChoosenArtist(arrayOfArtists, xappToken, newRound)
-                            })
-                })
-    }
-
-
-
-    // function findArtworkForChoosenArtist(arrayOfArtists, xappToken, newRound) {
-    //     var choosenArtist = newRound.randomizer(arrayOfArtists)
-    //     //console.log(choosenArtist)
-    //     return Artsy.getArtwork(choosenArtist, xappToken)
-    //             .then(function(artwork) {
-    //                 if(artwork.length > 0) {
-    //                     assignDataToNewRound(choosenArtist, artwork, newRound)
-    //                 } else {
-    //                     console.log("FOUNDZ NO ARTZ, TRYIN AGAIN.")
-    //                     return findArtworkForChoosenArtist(arrayOfArtists, xappToken, newRound)
-    //                 }
-    //             })
-    // }
-    //
-    // function assignDataToNewRound(choosenArtist, artwork, newRound) {
-    //     console.log("HAZ ARTWORKZ. STOP DA RECURSEZ.")
-    //     //console.log("choosen artist artwork: ", artwork)
-    //     var correctArtwork = document.getElementById('correctArtwork')
-    //
-    //     // Set data for the current game round
-    //     newRound.correctArtworkObject = newRound.randomizer(artwork)
-    //     newRound.correctArtworkTitle = newRound.correctArtworkObject.title
-    //     console.log("title: ", newRound.correctArtworkTitle)
-    //     newRound.correctArtist = choosenArtist.name
-    //     console.log('correct artist: ', newRound.correctArtist)
-    //     correctArtwork.src = newRound.correctArtworkObject._links.thumbnail.href.replace(/medium/g, 'large')
-    //     newRound.correctArtworkLink = newRound.correctArtworkObject._links.thumbnail.href
-    //     console.log("newRound: ", correctArtwork.src)
-    //     //return displayRound
-    // }
 
 })(); //END OF IIFE
