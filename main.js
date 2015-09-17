@@ -49,6 +49,7 @@
                     .then(function(xappToken) {
                         return Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                             .then(function(arrayOfArtists) {
+                                console.log(arrayOfArtists)
                                 data.push(arrayOfArtists)
                                 return findArtworkForChoosenArtist(arrayOfArtists, xappToken, data)
                             })
@@ -57,6 +58,7 @@
 
         function findArtworkForChoosenArtist(arrayOfArtists, xappToken, data) {
             var choosenArtist = randomizer(arrayOfArtists)
+            console.log(arrayOfArtists)
             return Artsy.getArtwork(choosenArtist, xappToken)
                     .then(function(artwork) {
                         if(artwork.length > 0) {
@@ -72,12 +74,7 @@
 
         function assignNewRound(data) {
             // data consists of [ArrayOfArtists, correctArtist Object, correctArtist's artworkObject]
-
-            $scope.newRound.artistOne = data[0][0].name
-            $scope.newRound.artistTwo = data[0][1].name
-            $scope.newRound.artistThree = data[0][2].name
-            $scope.newRound.artistFour = data[0][3].name
-
+            //console.log(data)
             $scope.newRound.correctArtist = data[1].name
 
             $scope.newRound.correctArtworkObject = randomizer(data[2])
@@ -87,10 +84,58 @@
             correctArtwork.src = $scope.newRound.correctArtworkObject._links.thumbnail.href.replace(/medium/g, 'large')
             $scope.newRound.correctArtworkLink = $scope.newRound.correctArtworkObject._links.thumbnail.href
 
+            setMultipleChoice(data[0])
+
             console.log("title: ", $scope.newRound.correctArtworkTitle)
             console.log('correct artist: ', $scope.newRound.correctArtist)
             console.log("newRound: ", correctArtwork.src)
             console.log("ALL IZ DONE")
+        }
+
+        function setMultipleChoice(arrayOfArtists) {
+
+            var randomArtists = []
+            // First find the correct artist for the answer and push them to the array
+            for (var i = 0; i < arrayOfArtists.length; i++) {
+                if ($scope.newRound.correctArtist === arrayOfArtists[i].name) {
+                    console.log($scope.newRound.correctArtist)
+                    console.log(arrayOfArtists[i].name)
+                    randomArtists.push(arrayOfArtists[i].name)
+                    console.log(arrayOfArtists)
+                    arrayOfArtists.splice(i, 1)
+                }
+            }
+            // Then randomly choose 3 more artists and push them to the array
+            for (var counter = 1; counter < 4; counter++) {
+                    //debugger
+                    var n = randomizer(arrayOfArtists, true)
+                    randomArtists.push(arrayOfArtists[n].name)
+                    arrayOfArtists.splice(n, 1)
+            }
+            // Finally assign newRound keys to the items in the array randomly
+            console.log(randomArtists)
+            var random = shuffle(randomArtists)
+            console.log(random)
+            $scope.newRound.artistOne = random[0]
+            $scope.newRound.artistTwo = random[1]
+            $scope.newRound.artistThree = random[2]
+            $scope.newRound.artistFour = random[3]
+            console.log($scope.newRound.artistOne)
+            console.log($scope.newRound.artistTwo)
+            console.log($scope.newRound.artistThree)
+            console.log($scope.newRound.artistFour)
+        }
+
+        function shuffle(array) {
+            var arr = []
+            var length = array.length
+            //for (var i = 0; i < length; i++) {
+                array.reverse()
+                var x = array.splice(randomizer(array, true), 1)
+                var y = array.splice(randomizer(array, true), 1)
+                arr = array.concat(x).concat(y)
+                return arr
+            //}
         }
 
         function getRandomCategory(categories) {
@@ -100,9 +145,13 @@
             return randomCategory
         }
 
-        function randomizer(array) {
+        function randomizer(array, needNumber) {
             var randomNumber = Math.floor(Math.random() * (array.length))
-            return array[randomNumber]
+            if (needNumber) {
+                return randomNumber
+            } else {
+                return array[randomNumber]
+            }
         }
 
         function resetDisplay() {
@@ -118,7 +167,6 @@
         }
 
         $scope.displayRound = function(newRound) {
-            console.log(2)
             $scope.displayRoundNumber++
             $scope.showSecondSetOfChoices = false
 

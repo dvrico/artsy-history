@@ -54,7 +54,8 @@ module.exports = {
                     if (error) {
                         reject()
                     }
-                    for (var i=0; i<4; i++) {
+                    console.log("Choosen Category: ", resource)
+                    for (var i=0; i < resource._embedded.artists.length; i++) {
                         artistArray.push(resource._embedded.artists[i])
                     }
                     resolve(artistArray)
