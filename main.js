@@ -28,7 +28,6 @@
 
         $scope.nextRound = function() {
             $scope.panelSelectTab(3)  //Putting this in the HTML along with newRound() causes a bug where the game sometimes won't run (div/button issue)
-            //resetDisplay()
             $scope.newRound = new GameSession($scope.categoriesForGameSession)
             var choosenCategory = getRandomCategory($scope.newRound.allCategories)
             getArtsyData(choosenCategory)
@@ -49,7 +48,6 @@
                     .then(function(xappToken) {
                         return Artsy.getArtists(fromRoot, toPath, choosenCategory.id, xappToken)
                             .then(function(arrayOfArtists) {
-                                console.log(arrayOfArtists)
                                 data.push(arrayOfArtists)
                                 return findArtworkForChoosenArtist(arrayOfArtists, xappToken, data)
                             })
@@ -58,7 +56,6 @@
 
         function findArtworkForChoosenArtist(arrayOfArtists, xappToken, data) {
             var choosenArtist = randomizer(arrayOfArtists)
-            console.log(arrayOfArtists)
             return Artsy.getArtwork(choosenArtist, xappToken)
                     .then(function(artwork) {
                         if(artwork.length > 0) {
@@ -74,7 +71,7 @@
 
         function assignNewRound(data) {
             // data consists of [ArrayOfArtists, correctArtist Object, correctArtist's artworkObject]
-            //console.log(data)
+            console.log(data)
             $scope.newRound.correctArtist = data[1].name
 
             $scope.newRound.correctArtworkObject = randomizer(data[2])
@@ -98,44 +95,31 @@
             // First find the correct artist for the answer and push them to the array
             for (var i = 0; i < arrayOfArtists.length; i++) {
                 if ($scope.newRound.correctArtist === arrayOfArtists[i].name) {
-                    console.log($scope.newRound.correctArtist)
-                    console.log(arrayOfArtists[i].name)
                     randomArtists.push(arrayOfArtists[i].name)
-                    console.log(arrayOfArtists)
                     arrayOfArtists.splice(i, 1)
                 }
             }
             // Then randomly choose 3 more artists and push them to the array
             for (var counter = 1; counter < 4; counter++) {
-                    //debugger
                     var n = randomizer(arrayOfArtists, true)
                     randomArtists.push(arrayOfArtists[n].name)
                     arrayOfArtists.splice(n, 1)
             }
             // Finally assign newRound keys to the items in the array randomly
-            console.log(randomArtists)
             var random = shuffle(randomArtists)
-            console.log(random)
             $scope.newRound.artistOne = random[0]
             $scope.newRound.artistTwo = random[1]
             $scope.newRound.artistThree = random[2]
             $scope.newRound.artistFour = random[3]
-            console.log($scope.newRound.artistOne)
-            console.log($scope.newRound.artistTwo)
-            console.log($scope.newRound.artistThree)
-            console.log($scope.newRound.artistFour)
         }
 
         function shuffle(array) {
             var arr = []
-            var length = array.length
-            //for (var i = 0; i < length; i++) {
-                array.reverse()
-                var x = array.splice(randomizer(array, true), 1)
-                var y = array.splice(randomizer(array, true), 1)
-                arr = array.concat(x).concat(y)
-                return arr
-            //}
+            array.reverse()
+            var x = array.splice(randomizer(array, true), 1)
+            var y = array.splice(randomizer(array, true), 1)
+            arr = array.concat(x).concat(y)
+            return arr
         }
 
         function getRandomCategory(categories) {
@@ -154,18 +138,6 @@
             }
         }
 
-        function resetDisplay() {
-            $scope.displayCategoryOne = defaultCategoryMessage
-            $scope.displayCategoryTwo = defaultCategoryMessage
-            $scope.displayCategoryThree = defaultCategoryMessage
-            $scope.displayCategoryFour = defaultCategoryMessage
-
-            $scope.displayArtistOne = defaultCategoryMessage
-            $scope.displayArtistTwo = defaultCategoryMessage
-            $scope.displayArtistThree = defaultCategoryMessage
-            $scope.displayArtistFour = defaultCategoryMessage
-        }
-
         $scope.displayRound = function(newRound) {
             $scope.displayRoundNumber++
             $scope.showSecondSetOfChoices = false
@@ -177,7 +149,7 @@
             $scope.displayArtworkTitle = $scope.newRound.correctArtworkTitle
         }
 
-        function updateDisplay(newRound) {
+        function updateDisplay() {
             $scope.displayArtistOne = $scope.newRound.artistOne
             $scope.displayArtistTwo = $scope.newRound.artistTwo
             $scope.displayArtistThree = $scope.newRound.artistThree
@@ -186,6 +158,14 @@
 
         $scope.checkFirstSet = function(number) {
             //Refactor Note: Just use the if-check with the display passed as an argument. No need for switch.
+            // console.log(choice === $scope.newRound.correctCategory)
+            // console.log(choice)
+            // if(choice === $scope.newRound.correctCategory) {
+            //     $scope.displayScore++
+            //     $scope.showSecondSetOfChoices = true
+            //     updateDisplay($scope.newRound)
+            // }
+
             switch (number) {
                 case 1:
                     console.log($scope.newRound.correctCategory === $scope.displayCategoryOne)
@@ -193,6 +173,9 @@
                         $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
+                    } else {
+                        console.log('WRONG!')
+                        checkGameRounds()
                     }
                     break;
                 case 2:
@@ -201,6 +184,9 @@
                         $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
+                    } else {
+                        console.log('WRONG!')
+                        checkGameRounds()
                     }
                     break;
                 case 3:
@@ -209,6 +195,9 @@
                         $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
+                    } else {
+                        console.log('WRONG!')
+                        checkGameRounds()
                     }
                     break;
                 case 4:
@@ -217,6 +206,9 @@
                         $scope.displayScore++
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
+                    } else {
+                        console.log('WRONG!')
+                        checkGameRounds()
                     }
                     break;
                 default:
@@ -232,12 +224,18 @@
                     if($scope.newRound.correctArtist === $scope.displayArtistOne) {
                         $scope.displayScore += 2
                         checkGameRounds()
+                    } else {
+                        console.log('WRONG!')
+                        checkGameRounds()
                     }
                     break;
                 case 2:
                     console.log($scope.newRound.correctArtist === $scope.displayArtistTwo)
                     if($scope.newRound.correctArtist === $scope.displayArtistTwo) {
                         $scope.displayScore += 2
+                        checkGameRounds()
+                    } else {
+                        console.log('WRONG!')
                         checkGameRounds()
                     }
                     break;
@@ -246,12 +244,18 @@
                     if($scope.newRound.correctArtist === $scope.displayArtistThree) {
                         $scope.displayScore += 2
                         checkGameRounds()
+                    } else {
+                        console.log('WRONG!')
+                        checkGameRounds()
                     }
                     break;
                 case 4:
                     console.log($scope.newRound.correctArtist === $scope.displayArtistFour)
                     if($scope.newRound.correctArtist === $scope.displayArtistFour) {
                         $scope.displayScore += 2
+                        checkGameRounds()
+                    } else {
+                        console.log('WRONG!')
                         checkGameRounds()
                     }
                     break;
@@ -262,7 +266,7 @@
         }
 
         function checkGameRounds() {
-            if ($scope.displayRoundNumber >= 3) {
+            if ($scope.displayRoundNumber >= 10) {
                 endGame()
             } else {
                 console.log('Make new round?')
