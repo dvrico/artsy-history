@@ -12,13 +12,15 @@
 
             <div class="panelOne" ng-show="panelIsSelected(1)">
                 <h1>Art(sy) History Study</h1>
-                <div class="col-md-6" id="introTextOne">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vehicula, justo vel tempor tincidunt, odio orci molestie magna, quis suscipit quam leo facilisis nisi. Phasellus fermentum vehicula semper.</p>
+                <div id="intro-text-box">
+                    <div class="intro-text col-md-6">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas vehicula, justo vel tempor tincidunt, odio orci molestie magna, quis suscipit quam leo facilisis nisi. Phasellus fermentum vehicula semper.</p>
+                    </div>
+                    <div class="intro-text col-md-6">
+                        <p>Phasellus ultrices, turpis sed sollicitudin fringilla, libero turpis pulvinar ex, vel imperdiet urna enim at ante. Mauris sollicitudin, arcu a consequat vestibulum, quam metus accumsan tellus, a tristique dolor est eget turpis.</p>
+                    </div>
                 </div>
-                <div class="col-md-6" id="introTextTwo">
-                    <p>Phasellus ultrices, turpis sed sollicitudin fringilla, libero turpis pulvinar ex, vel imperdiet urna enim at ante. Mauris sollicitudin, arcu a consequat vestibulum, quam metus accumsan tellus, a tristique dolor est eget turpis.</p>
-                </div>
-                <button type="button" class="btn btn-primary btn-lg panelButton" ng-click="panelSelectTab(2)">Let's Get Started</button>
+                <button type="button" class="center-button ghost-button-border" ng-click="panelSelectTab(2)">Let's Get Started</button>
             </div>
 
             <div class="panel" ng-show="panelIsSelected(2)">
