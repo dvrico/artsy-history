@@ -10,7 +10,7 @@
     <body ng-app='main' ng-controller="GameController">
         <section id="container">
 
-            <div class="panelOne" ng-show="panelIsSelected(1)">
+            <div class="panel" ng-show="panelIsSelected(1)">
                 <h1>Art(sy) History Study</h1>
                 <div id="intro-text-box">
                     <div class="intro-text col-md-6">
@@ -20,24 +20,29 @@
                         <p>Phasellus ultrices, turpis sed sollicitudin fringilla, libero turpis pulvinar ex, vel imperdiet urna enim at ante. Mauris sollicitudin, arcu a consequat vestibulum, quam metus accumsan tellus, a tristique dolor est eget turpis.</p>
                     </div>
                 </div>
-                <button type="button" class="center-button ghost-button-border" ng-click="panelSelectTab(2)">Let's Get Started</button>
+                <button type="button" class="center-me ghost-button-border" ng-click="panelSelectTab(2)">Let's Get Started</button>
             </div>
 
-            <div class="panel" ng-show="panelIsSelected(2)">
+            <div class="panel" id="panel-two" ng-show="panelIsSelected(2)">
                 <h1>Select Categories</h1>
-                <div class="buttonCategories">
+                <div id="categories">
                     <button type="button" class="ghost-button" ng-click="selectCategory(0)">Impressionism</button>
                     <button type="button" class="ghost-button" ng-click="selectCategory(1)">Expressionism</button>
                     <button type="button" class="ghost-button" ng-click="selectCategory(2)">High Renaissance</button>
                     <button type="button" class="ghost-button" ng-click="selectCategory(3)">Romanticism</button>
-                    <button type="button" class="ghost-button" ng-click="selectCategory(4)">Surrealism</button>
-                    <button type="button" class="ghost-button" ng-click="selectCategory(5)">Fauvism</button>
-                    <button type="button" class="ghost-button" ng-click="selectCategory(6)">Cubism</button>
+
+                    <!-- These categories aren't pulling up any artworks
                     <button type="button" class="ghost-button" ng-click="selectCategory(7)">Pop Art</button>
+                    <button type="button" class="ghost-button" ng-click="selectCategory(5)">Fauvism</button>
+                    <button type="button" class="ghost-button" ng-click="selectCategory(4)">Surrealism</button>
+
+                    //Cubism is only pulling up ONE artwork (Pablo Picasso)
+                    <button type="button" class="ghost-button" ng-click="selectCategory(5)">Cubism</button>
+                    !-->
                 </div>
-                <section>
+                <section id="panel-two-message-box">
                     <div ng-hide="whenGameIsReady"><h4>Choose <span>{{displayCategoriesSelected}}</span> more categories to start!</h4></div>
-                    <button class="btn btn-primary btn-lg panelButton" ng-show="whenGameIsReady" ng-click="nextRound()" type="button">Start!</button>
+                    <button class="center-me start-button" ng-show="whenGameIsReady" ng-click="nextRound()" type="button">Start!</button>
                 </section>
             </div>
 

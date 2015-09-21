@@ -20,21 +20,24 @@ module.exports = {
             name: 'Romanticism',
             id: '4d90d192dcdd5f44a500006b',
         },
-        {
-            name: 'Surrealism',
-            id: '4d90d192dcdd5f44a5000071',
-        },
-        {
-            name: 'Fauvism',
-            id: '4d90d190dcdd5f44a5000044',
-        },
-        {
-            name: 'Cubism',
-            id: '4d90d190dcdd5f44a500003e',
-        },
-        {
-            name: 'Pop Art',
-            id: '4e5e41670d2c670001030350',
-        }
     ]
 }
+/* These categories aren't pulling up any artworks
+{
+    name: 'Fauvism',
+    id: '4d90d190dcdd5f44a5000044',
+},
+{
+    name: 'Pop Art',
+    id: '4e5e41670d2c670001030350',
+},
+{
+    name: 'Surrealism',
+    id: '4d90d192dcdd5f44a5000071',
+},
+// Cubism is only pulling up ONE artwork (Pablo Picasso)
+{
+    name: 'Cubism',
+    id: '4d90d190dcdd5f44a500003e',
+},
+*/

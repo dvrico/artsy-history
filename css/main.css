@@ -1,54 +1,54 @@
-html, body {
-  /*height: 100%;
-  background-color: blue; */
-}
 
 html, body, #container {
     height: 100%;
     min-height: 100%;
+    background-image: url(../images/the-dance-class.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #6A0BC1;
 }
 
 #container {
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
     padding: 75px 75px 0px 75px;
-    /*margin: 75px 75px 0px 75px;*/
 }
-/*
+
 body > #container {
     height: auto;
     min-height: 100%;
-
 }
-*/
+
 h1 {
-  display: block;
-  margin: 0 auto;
-  text-align: center;
-  font-size: 5em;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 5em;
+    color: #fff;
+    margin-bottom: 50px;
+}
+
+p {
+    color: #fff;
+}
+
+.panel {
+    background-image: url(../images/the-dance-class.jpg);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+    background-color: #6A0BC1;
 }
 
 #intro-text-box {
-    padding: 50px 0px 50px 0px;
+    margin-bottom: 50px;
 }
 
 .intro-text {
     align-self: center;
     padding: 5px;
 }
-
-/*
-#introTextOne {
-
-    padding-bottom: 5px;
-}
-
-#introTextTwo {
-    padding-top: 5px;
-    padding-bottom: 20px;
-}
-*/
 
 .ghost-button-border {
     display: inline-block;
@@ -63,50 +63,75 @@ h1 {
     text-transform: uppercase;
     margin: 10px;
     transition: border-color 0.2s ease-out,
-              color 0.2s ease-out;
+                color 0.2s ease-out;
 }
 
 .ghost-button-border:hover,
 .ghost-button-border:active {
-  border-color: #6A0BC1;
-  color: #6A0BC1;
-  transition: border-color 0.3s ease-in,
-              color 0.3s ease-in;
+    border-color: #6A0BC1;
+    color: #6A0BC1;
+    transition: border-color 0.3s ease-in,
+                color 0.3s ease-in;
 }
 
-.center-button {
+.center-me {
     display: block;
     margin-left: auto;
     margin-right: auto;
 }
 
+#categories {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100px;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+
 .ghost-button {
-  display: inline-block;
-  width: 200px;
-  padding: 3px;
-  background-color: #fff;
-  color: black;
-  border: 1px solid black;
-  text-align: center;
-  outline: none;
-  text-decoration: none;
-  text-transform: uppercase;
-  margin: 10px;
+    width: 200px;
+    margin: auto;
+    padding: 3px;
+    background-color: #fff;
+    color: black;
+    border: 2px solid black;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+    text-transform: uppercase;
 }
 
 .ghost-button:hover,
 .ghost-button:active {
-  background-color: #6A0BC1;
-  color: #fff;
+    border-color: #6A0BC1;
+    background-color: #6A0BC1;
+    color: #fff;
 }
 
-.buttonCategories {
-    padding: 50px 10px 50px 10px;
+#panel-two-message-box {
+    margin: 50px;
 }
 
-.multipleChoice {
-    margin: 5px 5px 5px 5px;
-    margin-bottom: 5em;
+.start-button {
+    width: 200px;
+    height: 200px
+    margin: auto;
+    padding: 3px;
+    font-size: 1.5em;
+    background-color: #6A0BC1;
+    color: #fff;
+    border: 2px solid #6A0BC1;
+    text-align: center;
+    outline: none;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.start-button:hover,
+.start-button:active {
+    border-color: #C10BBD;
+    background-color: #C10BBD;
+    color: #fff;
 }
 
 #footer {
