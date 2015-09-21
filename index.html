@@ -26,10 +26,10 @@
             <div class="panel" ng-show="panelIsSelected(2)">
                 <h1>Select Categories</h1>
                 <div class="buttonCategories">
-                    <button type="button" class="ghost-button" ng-click="selectCategory(categorylib[0])">Impressionism</button>
-                    <button type="button" class="ghost-button" ng-click="selectCategory(categorylib[1])">Expressionism</button>
-                    <button type="button" class="ghost-button" ng-click="selectCategory(categorylib[2])">High Renaissance</button>
-                    <button type="button" class="ghost-button" ng-click="selectCategory(categorylib[3])">Romanticism</button>
+                    <button type="button" class="ghost-button" ng-click="selectCategory(0)">Impressionism</button>
+                    <button type="button" class="ghost-button" ng-click="selectCategory(1)">Expressionism</button>
+                    <button type="button" class="ghost-button" ng-click="selectCategory(2)">High Renaissance</button>
+                    <button type="button" class="ghost-button" ng-click="selectCategory(3)">Romanticism</button>
                 </div>
                 <section>
                     <div ng-hide="whenGameIsReady"><h4>Choose <span>{{displayCategoriesSelected}}</span> more categories to start!</h4></div>

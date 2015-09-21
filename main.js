@@ -1,6 +1,7 @@
 (function() {
     var app = angular.module('main', []);
     var Artsy = require('./js/artsy.js')
+    var Categories = require('./js/categories.js')
 
     app.controller('GameController', ['$scope', function($scope) {
         //Panel Controller got sucked in by game controller..
@@ -20,8 +21,8 @@
 
         var defaultCategoryMessage = 'Oops, something went wrong..'
 
-        $scope.selectCategory = function(category) {
-            $scope.categoriesForGameSession.push(category)
+        $scope.selectCategory = function(categoryNum) {
+            $scope.categoriesForGameSession.push(Categories.lib[categoryNum])
             $scope.displayCategoriesSelected--
             if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;
         }
@@ -277,30 +278,6 @@
         function endGame() {
             $scope.panelTab = 4
         }
-
-        // This should probably go into its own file once the lib gets bigger.
-        $scope.categorylib = [
-            {
-                name: 'Impressionism',
-                id: '4d90d191dcdd5f44a500004e',
-                description: '',
-            },
-            {
-                name: 'Expressionism',
-                id: '53c801277261695ed8c70100',
-                description: '',
-            },
-            {
-                name: 'High Renaissance',
-                id: '4f26f327dc7f670001000126',
-                description: '',
-            },
-            {
-                name: 'Romanticism',
-                id: '4d90d192dcdd5f44a500006b',
-                description: '',
-            }
-        ]
 
     }]) // END OF GAME CONTROLLER
 
