@@ -1,3 +1,4 @@
+@import url(https://fonts.googleapis.com/css?family=Lato);
 
 html, body, #container {
     height: 100%;
@@ -28,8 +29,9 @@ h1 {
     margin-bottom: 50px;
 }
 
-p {
+h4, p {
     color: #fff;
+    font-family: 'Lato', sans-serif;
 }
 
 .panel {
@@ -39,6 +41,10 @@ p {
     background-attachment: fixed;
     background-size: cover;
     background-color: #6A0BC1;
+    position: absolute;
+    top: 20%;
+    left: 20%;
+    right: 20%;
 }
 
 #intro-text-box {
@@ -54,9 +60,9 @@ p {
     display: inline-block;
     width: 200px;
     padding: 3px;
-    color: #000;
-    background-color: #fff;
-    border: 2px solid #000;
+    color: #fff;
+    background-color: transparent;
+    border: 2px solid #fff;
     text-align: center;
     outline: none;
     text-decoration: none;
@@ -92,9 +98,9 @@ p {
     width: 200px;
     margin: auto;
     padding: 3px;
-    background-color: #fff;
-    color: black;
-    border: 2px solid black;
+    background-color: transparent;
+    color: #fff;
+    border: 2px solid #fff;
     text-align: center;
     outline: none;
     text-decoration: none;
@@ -132,6 +138,10 @@ p {
     border-color: #C10BBD;
     background-color: #C10BBD;
     color: #fff;
+}
+
+a {
+    color: #0B62C1;
 }
 
 #footer {
