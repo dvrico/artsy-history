@@ -89,4 +89,4 @@ module.exports = {
             })
         })
     }
-} // END OF ARTSY OBJECT
+} // END OF MODULE.EXPORTS
