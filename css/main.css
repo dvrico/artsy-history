@@ -1,7 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Lato);
 
 html, body, #container {
-    height: 100%;
     min-height: 100%;
     background-image: url(../images/the-dance-class.jpg);
     background-position: center center;
@@ -29,8 +28,16 @@ h1 {
     margin-bottom: 50px;
 }
 
+h2 {
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 3.5em;
+    color: #333;
+}
+
 h3 {
-    color: #000;
+    color: #333;
     font-size: 1.5em;
     font-family: 'Lato', sans-serif;
 }
@@ -101,7 +108,7 @@ h4, p {
     flex-flow: row wrap;
     height: 100px;
     justify-content: center;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 .ghost-button {
@@ -125,15 +132,13 @@ h4, p {
 }
 
 .panel-two {
-    top: 10%;
+    top: 7%;
 }
 
 .panel-two-item > p {
     font-size: 16px;
     font-weight: bold;
-    color: #000;
-    margin-bottom: 10px;
-    padding: 10px
+    color: #333;
 }
 
 .italic-me {
@@ -141,18 +146,18 @@ h4, p {
 }
 
 .panel-two-item {
-    background: rgba(255, 255, 255, 0.35);
+    background: rgba(255, 255, 255, 0.55);
     border-radius: 3px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
     margin-left: 20px;
     margin-right: 20px;
     margin-bottom: 10px;
     z-index: 2;
-    padding: 0 10px;
+    padding: 20px;
 }
 
 #panel-two-message-box {
-    margin: 50px;
+    margin: 10px;
 }
 
 .start-button {
@@ -181,14 +186,16 @@ a {
     color: #0B62C1;
 }
 
-#footer {
+footer {
     clear: both;
-    position: relative;
-    z-index: 10;
     height: 3em;
     margin-top: -3em;
     padding: 5px 5px;
     text-align: center;
     color: white;
     background-color: black; /*The Purp #6A0BC1 */
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
