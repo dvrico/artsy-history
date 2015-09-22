@@ -29,9 +29,16 @@ h1 {
     margin-bottom: 50px;
 }
 
+h3 {
+    color: #000;
+    font-size: 1.5em;
+    font-family: 'Lato', sans-serif;
+}
+
 h4, p {
     color: #fff;
     font-family: 'Lato', sans-serif;
+    font-size: 15px;
 }
 
 .panel {
@@ -48,6 +55,9 @@ h4, p {
 }
 
 #intro-text-box {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
     margin-bottom: 50px;
 }
 
@@ -112,6 +122,33 @@ h4, p {
     border-color: #6A0BC1;
     background-color: #6A0BC1;
     color: #fff;
+}
+
+.panel-two {
+    top: 10%;
+}
+
+.panel-two-item > p {
+    font-size: 16px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 10px;
+    padding: 10px
+}
+
+.italic-me {
+    font-style: italic;
+}
+
+.panel-two-item {
+    background: rgba(255, 255, 255, 0.35);
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    z-index: 2;
+    padding: 0 10px;
 }
 
 #panel-two-message-box {
