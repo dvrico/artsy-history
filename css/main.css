@@ -103,7 +103,7 @@ h4, p {
     margin-right: auto;
 }
 
-#categories {
+.categories {
     display: flex;
     flex-flow: row wrap;
     height: 100px;
@@ -135,6 +135,13 @@ h4, p {
     top: 7%;
 }
 
+.panel-three {
+    top: 7%;
+    right: 7%;
+    left: 7%;
+    bottom: 7%;
+}
+
 .panel-two-item > p {
     font-size: 16px;
     font-weight: bold;
@@ -154,6 +161,33 @@ h4, p {
     margin-bottom: 10px;
     z-index: 2;
     padding: 20px;
+}
+
+.panel-three-item {
+    background: rgba(255, 255, 255, 0.55);
+    border-radius: 3px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 10px;
+    z-index: 2;
+    padding: 20px;
+}
+
+.game-info {
+    font-size: 1em;
+    font-family: none;
+    padding: 10px;
+    margin: 0 75% 10px 20px;
+}
+
+.game-info > h3 {
+    margin: 5px;
+    font-weight: bold;
+}
+
+ul.categories {
+    height: auto;
 }
 
 #panel-two-message-box {
@@ -186,7 +220,20 @@ a {
     color: #0B62C1;
 }
 
+#img-container {
+    display: inline-block;
+    max-width: 600px;
+    max-height: 900px;
+    margin: 0 auto; /* to center the container */
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
 footer {
+    position: fixed;
     clear: both;
     height: 3em;
     margin-top: -3em;
@@ -194,7 +241,6 @@ footer {
     text-align: center;
     color: white;
     background-color: black; /*The Purp #6A0BC1 */
-    position: absolute;
     left: 0;
     bottom: 0;
     width: 100%;
