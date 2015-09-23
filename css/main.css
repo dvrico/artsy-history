@@ -125,6 +125,30 @@ h4, p {
     color: #fff;
 }
 
+.correct-answer {
+    border-color: green;
+    background-color: green;
+    color: #000;
+}
+
+.correct-answer:hover {
+    border-color: green;
+    background-color: green;
+    color: #000;
+}
+
+.wrong-answer {
+    border-color: red;
+    background-color: red;
+    color: #000;
+}
+
+.wrong-answer:hover {
+    border-color: red;
+    background-color: red;
+    color: #000;
+}
+
 .multiple-choice {
     width: 100%;
     margin-bottom: 10px;
