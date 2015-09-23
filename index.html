@@ -62,7 +62,7 @@
                 </div>
                 <div class="panel-three-item col-md-8" id="img-container">
                     <img id='correctArtwork' src="">
-                    <p class="italic-me">{{displayArtworkTitle}}</p>
+                    <p class="italic-me">{{displayArtworkTitle}}, {{displayArtworkDate}}</p>
                 </div>
                 <div class="panel-three-item categories col-md-4" ng-hide="showSecondSetOfChoices">
                     <button class="ghost-button multiple-choice" ng-click="checkFirstSet(1)">{{displayCategoryOne}}</button>
@@ -79,8 +79,8 @@
             </div>
 
             <div class="panel panel-four animated fadeIn" ng-show="panelIsSelected(4)">
-                <h2>Score: {{displayScore}}pts.</h2>
-                <h2>Bonus: {{displayBonus}}pts.</h2>
+                <h3>Score: {{displayScore}}pts.</h3>
+                <h3>Bonus: {{displayBonus}}pts.</h3>
                 <h2>Your Total Score: {{displayTotalScore}}pts!</h2>
                 <h2>Congrats!</h2>
                 <button type="button" class="center-me ghost-button-border" ng-click="panelSelectTab(1)">Play Again</button>

@@ -61,7 +61,7 @@
             var choosenArtist = randomizer(arrayOfArtists)
             return Artsy.getArtwork(choosenArtist, xappToken)
                     .then(function(artwork) {
-                        if(artwork.length > 0) {
+                        if(isViable(artwork)) {
                             console.log("HAZ ARTWORKZ. STOP DA RECURSEZ.")
                             data.push(choosenArtist, artwork)
                             return data
@@ -72,6 +72,19 @@
                     })
         }
 
+        function isViable(artwork) {
+            if(artwork.length > 0) {
+                for(var i=0; i < artwork.length; i++) {
+                    if(artwork[i]._links.thumbnail == undefined) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        }
+
         function assignNewRound(data) {
             // data consists of [ArrayOfArtists, correctArtist Object, correctArtist's artworkObject]
             console.log(data)
@@ -79,6 +92,7 @@
 
             $scope.newRound.correctArtworkObject = randomizer(data[2])
             $scope.newRound.correctArtworkTitle = $scope.newRound.correctArtworkObject.title
+            $scope.newRound.correctArtworkDate = $scope.newRound.correctArtworkObject.date
 
             var correctArtwork = document.getElementById('correctArtwork')
             correctArtwork.src = $scope.newRound.correctArtworkObject._links.thumbnail.href.replace(/medium/g, 'large')
@@ -150,6 +164,7 @@
             $scope.displayCategoryThree = $scope.newRound.categoryThree
             $scope.displayCategoryFour = $scope.newRound.categoryFour
             $scope.displayArtworkTitle = $scope.newRound.correctArtworkTitle
+            $scope.displayArtworkDate = $scope.newRound.correctArtworkDate
         }
 
         function updateDisplay() {
@@ -293,6 +308,7 @@
 
         this.correctArtworkObject;
         this.correctArtworkTitle;
+        this.correctArtworkDate;
         this.correctArtworkLink;
         this.correctArtist;
         this.correctCategory;

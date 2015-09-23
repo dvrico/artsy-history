@@ -40,6 +40,7 @@ h3 {
     color: #333;
     font-size: 1.5em;
     font-family: 'Lato', sans-serif;
+    padding-bottom: 10px;
 }
 
 h4, p {
@@ -150,9 +151,16 @@ h4, p {
     bottom: 3%;
 }
 
-.panel-four > h2 {
+.panel-four > h2,
+.panel-four > h3 {
     color: #fff;
-    padding-bottom: 10px;
+    display: block;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.panel-four > button {
+    margin-top: 65px;
 }
 
 .panel-two-item > p {
