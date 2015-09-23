@@ -55,26 +55,26 @@
                 </section>
             </div>
 
-            <div class="panel panel-three" ng-show="panelIsSelected(3)">
+            <div class="panel panel-three animated fadeIn" ng-show="panelIsSelected(3)">
                 <div class="panel-three-item game-info">
                     <h3>Round <span>{{displayRoundNumber}}</span></h3>
-                    <h3>Score: <span>{{displayScore}}</span> pts.</h3>
+                    <h4>Score: <span>{{displayScore}}</span> pts.</h4>
                 </div>
                 <div class="panel-three-item col-md-8" id="img-container">
-                    <img class="panelButton" id='correctArtwork' src="">
+                    <img id='correctArtwork' src="">
                     <p class="italic-me">{{displayArtworkTitle}}</p>
                 </div>
-                <ul class="panel-three-item categories col-md-4" ng-hide="showSecondSetOfChoices">
-                    <button class="ghost-button" ng-click="checkFirstSet(1)">{{displayCategoryOne}}</button>
-                    <button class="ghost-button" ng-click="checkFirstSet(2)">{{displayCategoryTwo}}</button>
-                    <button class="ghost-button" ng-click="checkFirstSet(3)">{{displayCategoryThree}}</button>
-                    <button class="ghost-button" ng-click="checkFirstSet(4)">{{displayCategoryFour}}</button>
-                </ul>
+                <div class="panel-three-item categories col-md-4" ng-hide="showSecondSetOfChoices">
+                    <button class="ghost-button multiple-choice" ng-click="checkFirstSet(1)">{{displayCategoryOne}}</button>
+                    <button class="ghost-button multiple-choice" ng-click="checkFirstSet(2)">{{displayCategoryTwo}}</button>
+                    <button class="ghost-button multiple-choice" ng-click="checkFirstSet(3)">{{displayCategoryThree}}</button>
+                    <button class="ghost-button multiple-choice" ng-click="checkFirstSet(4)">{{displayCategoryFour}}</button>
+                </div>
                 <ul class="panel-three-item col-md-4" ng-show="showSecondSetOfChoices">
-                    <li class="ghost-button" ng-click="checkSecondSet(1)">{{displayArtistOne}}</li>
-                    <li class="ghost-button" ng-click="checkSecondSet(2)">{{displayArtistTwo}}</li>
-                    <li class="ghost-button" ng-click="checkSecondSet(3)">{{displayArtistThree}}</li>
-                    <li class="ghost-button" ng-click="checkSecondSet(4)">{{displayArtistFour}}</li>
+                    <button class="ghost-button multiple-choice" ng-click="checkSecondSet(1)">{{displayArtistOne}}</button>
+                    <button class="ghost-button multiple-choice" ng-click="checkSecondSet(2)">{{displayArtistTwo}}</button>
+                    <button class="ghost-button multiple-choice" ng-click="checkSecondSet(3)">{{displayArtistThree}}</button>
+                    <button class="ghost-button multiple-choice" ng-click="checkSecondSet(4)">{{displayArtistFour}}</button>
                 </ul>
             </div>
 

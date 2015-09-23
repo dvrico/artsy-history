@@ -113,7 +113,7 @@ h4, p {
 
 .ghost-button {
     width: 200px;
-    margin: auto;
+    margin: 10px;
     padding: 3px;
     background-color: transparent;
     color: #fff;
@@ -131,15 +131,23 @@ h4, p {
     color: #fff;
 }
 
+.multiple-choice {
+    width: 300px;
+    margin-bottom: 10px;
+    padding: 30px 50px;
+    font-size: 1.7em;
+}
+
 .panel-two {
     top: 7%;
 }
 
 .panel-three {
-    top: 7%;
-    right: 7%;
-    left: 7%;
-    bottom: 7%;
+    background: rgba(15, 2, 28, .93);
+    top: 0.1%;
+    right: 1%;
+    left: 1%;
+    bottom: 3%;
 }
 
 .panel-two-item > p {
@@ -164,7 +172,7 @@ h4, p {
 }
 
 .panel-three-item {
-    background: rgba(255, 255, 255, 0.55);
+    /*background: rgba(255, 255, 255, 0.55);*/
     border-radius: 3px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
     margin-left: 20px;
@@ -175,18 +183,23 @@ h4, p {
 }
 
 .game-info {
-    font-size: 1em;
-    font-family: none;
     padding: 10px;
-    margin: 0 75% 10px 20px;
+    margin: 0 75% 10px 100px;
+}
+
+.game-info > h4 {
+    font-size: 15px;
+    color: #fff;
 }
 
 .game-info > h3 {
     margin: 5px;
     font-weight: bold;
+    color: #fff;
+    font-size: 2em;
 }
 
-ul.categories {
+div.categories {
     height: auto;
 }
 
@@ -223,13 +236,13 @@ a {
 #img-container {
     display: inline-block;
     max-width: 600px;
-    max-height: 900px;
-    margin: 0 auto; /* to center the container */
+    max-height: 500px;
+    margin-left: 100px;
 }
 
 img {
-    width: 100%;
-    height: auto;
+    max-width: 100%;
+    max-height: 500px;
 }
 
 footer {
