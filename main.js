@@ -24,7 +24,8 @@
 
         var defaultCategoryMessage = 'Oops, something went wrong..'
 
-        $scope.selectCategory = function(categoryNum) {
+        $scope.selectCategory = function(categoryNum, $event) {
+            $event.target.classList.add('ghost-button-clicked')
             $scope.categoriesForGameSession.push(Categories.lib[categoryNum])
             $scope.displayCategoriesSelected--
             if (!$scope.displayCategoriesSelected) $scope.whenGameIsReady = true;

@@ -126,16 +126,17 @@ h4, p {
 }
 
 .ghost-button:hover,
-.ghost-button:active {
+.ghost-button:active,
+.ghost-button-clicked {
     border-color: #6A0BC1;
     background-color: #6A0BC1;
     color: #fff;
 }
 
 .multiple-choice {
-    width: 300px;
+    width: 500px;
     margin-bottom: 10px;
-    padding: 30px 50px;
+    padding: 10px 50px;
     font-size: 1.7em;
 }
 
