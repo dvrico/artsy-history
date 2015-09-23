@@ -14,6 +14,7 @@
         }
 
         $scope.categoriesForGameSession = []
+        $scope.historyOfArtworkForGameSession = []
         $scope.displayRoundNumber = 0
         $scope.displayScore = 0
         $scope.displayTotalScore = 0
@@ -73,15 +74,39 @@
         }
 
         function isViable(artwork) {
-            if(artwork.length > 0) {
+            // Quick fix: artists with only 1 artwork will cause an infinite loop because of getViableArtwork()
+            if(artwork.length > 1) {
                 for(var i=0; i < artwork.length; i++) {
-                    if(artwork[i]._links.thumbnail == undefined) {
-                        return false;
-                    }
+                    if(artwork[i]._links.thumbnail == undefined) return false;
+                    //Moved this function to later down the pipeline, because random artwork
+                    //isn't choosen until the very end.
+                    //if(checkForRepeats(artwork[i].title)) return false;
                 }
                 return true;
             } else {
                 return false;
+            }
+        }
+
+        function checkForRepeats(titleInQuestion) {
+            for(var i=0; i < $scope.historyOfArtworkForGameSession.length; i++) {
+                console.log('checking for repeats:')
+                console.log('records: ', $scope.historyOfArtworkForGameSession[i])
+                console.log('title in question: ', titleInQuestion)
+                console.log($scope.historyOfArtworkForGameSession[i] === titleInQuestion)
+                if($scope.historyOfArtworkForGameSession[i] === titleInQuestion) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function getViableArtwork(data) {
+            var newArtwork = randomizer(data)
+            if(checkForRepeats(newArtwork.title)) {
+                return getViableArtwork(data)
+            } else {
+                return newArtwork;
             }
         }
 
@@ -90,8 +115,11 @@
             console.log(data)
             $scope.newRound.correctArtist = data[1].name
 
-            $scope.newRound.correctArtworkObject = randomizer(data[2])
+            $scope.newRound.correctArtworkObject = getViableArtwork(data[2])
             $scope.newRound.correctArtworkTitle = $scope.newRound.correctArtworkObject.title
+            // Record titles to check for duplicated throughout the game
+            $scope.historyOfArtworkForGameSession.push($scope.newRound.correctArtworkTitle)
+            console.log('records: ', $scope.historyOfArtworkForGameSession)
             $scope.newRound.correctArtworkDate = $scope.newRound.correctArtworkObject.date
 
             var correctArtwork = document.getElementById('correctArtwork')
