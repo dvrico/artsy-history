@@ -104,14 +104,6 @@ h4, p {
     margin-right: auto;
 }
 
-.categories {
-    display: flex;
-    flex-flow: row wrap;
-    height: 100px;
-    justify-content: center;
-    margin-bottom: 10px;
-}
-
 .ghost-button {
     width: 200px;
     margin: 10px;
@@ -134,7 +126,7 @@ h4, p {
 }
 
 .multiple-choice {
-    width: 500px;
+    width: 100%;
     margin-bottom: 10px;
     padding: 10px 50px;
     font-size: 1.7em;
@@ -186,19 +178,30 @@ h4, p {
 }
 
 .panel-three-item {
-    /*background: rgba(255, 255, 255, 0.55);*/
-    border-radius: 3px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
-    margin-left: 20px;
+    /*outline: solid 1px red;*/
     margin-right: 20px;
     margin-bottom: 10px;
-    z-index: 2;
-    padding: 20px;
+}
+.multiple-choice-box {
+    margin-top: 35%;
+}
+
+.categories {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100px;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.panel-three .column {
+    width: 50%;
+    float: left;
 }
 
 .game-info {
     padding: 10px;
-    margin: 0 75% 10px 100px;
+    margin-left: 17%;
 }
 
 .game-info > h4 {
@@ -248,7 +251,8 @@ a {
 }
 
 #img-container {
-    display: inline-block;
+    display: block;
+    margin: 0 auto;
     max-width: 600px;
     max-height: 500px;
     margin-left: 100px;
