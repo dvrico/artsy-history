@@ -16,6 +16,8 @@
         $scope.categoriesForGameSession = []
         $scope.displayRoundNumber = 0
         $scope.displayScore = 0
+        $scope.displayTotalScore = 0
+        $scope.displayBonus = 0
         $scope.displayCategoriesSelected = 4
         $scope.whenGameIsReady = false
 
@@ -159,19 +161,13 @@
 
         $scope.checkFirstSet = function(number) {
             //Refactor Note: Just use the if-check with the display passed as an argument. No need for switch.
-            // console.log(choice === $scope.newRound.correctCategory)
-            // console.log(choice)
-            // if(choice === $scope.newRound.correctCategory) {
-            //     $scope.displayScore++
-            //     $scope.showSecondSetOfChoices = true
-            //     updateDisplay($scope.newRound)
-            // }
 
             switch (number) {
                 case 1:
                     console.log($scope.newRound.correctCategory === $scope.displayCategoryOne)
                     if($scope.newRound.correctCategory === $scope.displayCategoryOne) {
-                        $scope.displayScore++
+                        $scope.displayScore += 10
+                        $scope.displayTotalScore += 10
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
                     } else {
@@ -182,7 +178,8 @@
                 case 2:
                     console.log($scope.newRound.correctCategory === $scope.displayCategoryTwo)
                     if($scope.newRound.correctCategory === $scope.displayCategoryTwo) {
-                        $scope.displayScore++
+                        $scope.displayScore += 10
+                        $scope.displayTotalScore += 10
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
                     } else {
@@ -193,7 +190,8 @@
                 case 3:
                     console.log($scope.newRound.correctCategory === $scope.displayCategoryThree)
                     if($scope.newRound.correctCategory === $scope.displayCategoryThree) {
-                        $scope.displayScore++
+                        $scope.displayScore += 10
+                        $scope.displayTotalScore += 10
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
                     } else {
@@ -204,7 +202,8 @@
                 case 4:
                     console.log($scope.newRound.correctCategory === $scope.displayCategoryFour)
                     if($scope.newRound.correctCategory === $scope.displayCategoryFour) {
-                        $scope.displayScore++
+                        $scope.displayScore += 10
+                        $scope.displayTotalScore += 10
                         $scope.showSecondSetOfChoices = true
                         updateDisplay($scope.newRound)
                     } else {
@@ -223,7 +222,8 @@
                 case 1:
                     console.log($scope.newRound.correctArtist === $scope.displayArtistOne)
                     if($scope.newRound.correctArtist === $scope.displayArtistOne) {
-                        $scope.displayScore += 2
+                        $scope.displayBonus += 10
+                        $scope.displayTotalScore += 10
                         checkGameRounds()
                     } else {
                         console.log('WRONG!')
@@ -233,7 +233,8 @@
                 case 2:
                     console.log($scope.newRound.correctArtist === $scope.displayArtistTwo)
                     if($scope.newRound.correctArtist === $scope.displayArtistTwo) {
-                        $scope.displayScore += 2
+                        $scope.displayBonus += 10
+                        $scope.displayTotalScore += 10
                         checkGameRounds()
                     } else {
                         console.log('WRONG!')
@@ -243,7 +244,8 @@
                 case 3:
                     console.log($scope.newRound.correctArtist === $scope.displayArtistThree)
                     if($scope.newRound.correctArtist === $scope.displayArtistThree) {
-                        $scope.displayScore += 2
+                        $scope.displayBonus += 10
+                        $scope.displayTotalScore += 10
                         checkGameRounds()
                     } else {
                         console.log('WRONG!')
@@ -253,7 +255,8 @@
                 case 4:
                     console.log($scope.newRound.correctArtist === $scope.displayArtistFour)
                     if($scope.newRound.correctArtist === $scope.displayArtistFour) {
-                        $scope.displayScore += 2
+                        $scope.displayBonus += 10
+                        $scope.displayTotalScore += 10
                         checkGameRounds()
                     } else {
                         console.log('WRONG!')

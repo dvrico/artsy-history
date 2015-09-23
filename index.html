@@ -28,8 +28,8 @@
                 <div class="panel-two-item">
                     <h3>Game Mode</h3>
                     <p><span class="italic-me">Object of the game:</span>  Guess the period or movement from which each artwork is from. If you answer correctly, guess the artist as a bonus question.</p>
-                    <p>Correct period/movement 1pt</p>
-                    <p>Bonus: Correct artist 2pt</p>
+                    <p>Correct period/movement is worth 10pts.</p>
+                    <p>Bonus question is worth an extra 10pts.</p>
                 </div>
                 <div class="panel-two-item">
                     <h3>Categories</h3>
@@ -58,7 +58,7 @@
             <div class="panel panel-three animated fadeIn" ng-show="panelIsSelected(3)">
                 <div class="panel-three-item game-info">
                     <h3>Round <span>{{displayRoundNumber}}</span></h3>
-                    <h4>Score: <span>{{displayScore}}</span> pts.</h4>
+                    <h4>Score: <span>{{displayTotalScore}}</span> pts.</h4>
                 </div>
                 <div class="panel-three-item col-md-8" id="img-container">
                     <img id='correctArtwork' src="">
@@ -78,11 +78,12 @@
                 </ul>
             </div>
 
-            <div class="panel" ng-show="panelIsSelected(4)">
-                <h1>Finish</h1>
-                <h2>You Scored: {{displayScore}}pts!</h2>
+            <div class="panel panel-four animated fadeIn" ng-show="panelIsSelected(4)">
+                <h2>Score: {{displayScore}}pts.</h2>
+                <h2>Bonus: {{displayBonus}}pts.</h2>
+                <h2>Your Total Score: {{displayTotalScore}}pts!</h2>
                 <h2>Congrats!</h2>
-                <button type="button" ng-click="panelSelectTab(1)">Start Over</button>
+                <button type="button" class="center-me ghost-button-border" ng-click="panelSelectTab(1)">Start Over</button>
             </div>
 
         </section>

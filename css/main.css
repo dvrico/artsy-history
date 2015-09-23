@@ -150,6 +150,11 @@ h4, p {
     bottom: 3%;
 }
 
+.panel-four > h2 {
+    color: #fff;
+    padding-bottom: 10px;
+}
+
 .panel-two-item > p {
     font-size: 16px;
     font-weight: bold;
