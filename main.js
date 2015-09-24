@@ -259,6 +259,10 @@
             $scope.panelTab = 4
         }
 
+        $scope.resetGame = function() {
+            location.reload()
+        }
+
     }]) // END OF GAME CONTROLLER
 
     function GameSession (categories) {
