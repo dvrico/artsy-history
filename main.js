@@ -91,10 +91,6 @@
 
         function checkForRepeats(titleInQuestion) {
             for(var i=0; i < $scope.historyOfArtworkForGameSession.length; i++) {
-                console.log('checking for repeats:')
-                console.log('records: ', $scope.historyOfArtworkForGameSession[i])
-                console.log('title in question: ', titleInQuestion)
-                console.log($scope.historyOfArtworkForGameSession[i] === titleInQuestion)
                 if($scope.historyOfArtworkForGameSession[i] === titleInQuestion) {
                     return true;
                 }
@@ -207,149 +203,51 @@
 
             if($scope.newRound.correctCategory === $event.target.innerHTML) {
                 $event.target.classList.add('correct-answer')
-
+                $event.target.classList.add('animated', 'tada')
                 $timeout(function() {
                     $scope.displayScore += 10
                     $scope.displayTotalScore += 10
                     $scope.showSecondSetOfChoices = true
                     $event.target.classList.remove('correct-answer')
+                    $event.target.classList.remove('animated', 'tada')
                     updateDisplay($scope.newRound)
                 }, 1500)
             } else {
                 $event.target.classList.add('wrong-answer')
+                $event.target.classList.add('animated', 'shake')
                 setTimeout(function() {
                     $event.target.classList.remove('wrong-answer')
+                    $event.target.classList.remove('animated', 'shake')
                     checkGameRounds()
                 }, 1500)
             }
-
-            // switch (number) {
-            //     case 1:
-            //         console.log($scope.newRound.correctCategory === $scope.displayCategoryOne)
-            //         if($scope.newRound.correctCategory === $scope.displayCategoryOne) {
-            //             $scope.displayScore += 10
-            //             $scope.displayTotalScore += 10
-            //             $scope.showSecondSetOfChoices = true
-            //             updateDisplay($scope.newRound)
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     case 2:
-            //         console.log($scope.newRound.correctCategory === $scope.displayCategoryTwo)
-            //         if($scope.newRound.correctCategory === $scope.displayCategoryTwo) {
-            //             $scope.displayScore += 10
-            //             $scope.displayTotalScore += 10
-            //             $scope.showSecondSetOfChoices = true
-            //             updateDisplay($scope.newRound)
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     case 3:
-            //         console.log($scope.newRound.correctCategory === $scope.displayCategoryThree)
-            //         if($scope.newRound.correctCategory === $scope.displayCategoryThree) {
-            //             $scope.displayScore += 10
-            //             $scope.displayTotalScore += 10
-            //             $scope.showSecondSetOfChoices = true
-            //             updateDisplay($scope.newRound)
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     case 4:
-            //         console.log($scope.newRound.correctCategory === $scope.displayCategoryFour)
-            //         if($scope.newRound.correctCategory === $scope.displayCategoryFour) {
-            //             $scope.displayScore += 10
-            //             $scope.displayTotalScore += 10
-            //             $scope.showSecondSetOfChoices = true
-            //             updateDisplay($scope.newRound)
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     default:
-            //         console.log('Something went wrong with checkFirstSet()')
-            //         break;
-            // }
         }
 
         $scope.checkSecondSet = function($event) {
 
             if($scope.newRound.correctArtist === $event.target.innerHTML) {
                 $event.target.classList.add('correct-answer')
-
+                $event.target.classList.add('animated', 'tada')
                 $timeout(function() {
                     $scope.displayBonus += 10
                     $scope.displayTotalScore += 10
                     $event.target.classList.remove('correct-answer')
+                    $event.target.classList.remove('animated', 'tada')
                     checkGameRounds()
                 }, 1500)
             } else {
                 $event.target.classList.add('wrong-answer')
+                $event.target.classList.add('animated', 'shake')
                 $timeout(function() {
                     $event.target.classList.remove('wrong-answer')
+                    $event.target.classList.remove('animated', 'shake')
                     checkGameRounds()
                 }, 1500)
             }
-
-            // switch (number) {
-            //     case 1:
-            //         console.log($scope.newRound.correctArtist === $scope.displayArtistOne)
-            //         if($scope.newRound.correctArtist === $scope.displayArtistOne) {
-            //             $scope.displayBonus += 10
-            //             $scope.displayTotalScore += 10
-            //             checkGameRounds()
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     case 2:
-            //         console.log($scope.newRound.correctArtist === $scope.displayArtistTwo)
-            //         if($scope.newRound.correctArtist === $scope.displayArtistTwo) {
-            //             $scope.displayBonus += 10
-            //             $scope.displayTotalScore += 10
-            //             checkGameRounds()
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     case 3:
-            //         console.log($scope.newRound.correctArtist === $scope.displayArtistThree)
-            //         if($scope.newRound.correctArtist === $scope.displayArtistThree) {
-            //             $scope.displayBonus += 10
-            //             $scope.displayTotalScore += 10
-            //             checkGameRounds()
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     case 4:
-            //         console.log($scope.newRound.correctArtist === $scope.displayArtistFour)
-            //         if($scope.newRound.correctArtist === $scope.displayArtistFour) {
-            //             $scope.displayBonus += 10
-            //             $scope.displayTotalScore += 10
-            //             checkGameRounds()
-            //         } else {
-            //             console.log('WRONG!')
-            //             checkGameRounds()
-            //         }
-            //         break;
-            //     default:
-            //         console.log('Something went wrong with checkSecondSet()')
-            //         break;
-            // }
         }
 
         function checkGameRounds() {
-            if ($scope.displayRoundNumber >= 10) {
+            if ($scope.displayRoundNumber >= 6) {
                 endGame()
             } else {
                 console.log('Make new round?')
